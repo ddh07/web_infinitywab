@@ -253,20 +253,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const rows = filtered.map(project => {
             const technologies = Array.isArray(project.technologies) ? project.technologies : [];
-            const techLabels = technologies.slice(0, 3).map(tech => `<span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600">${tech}</span>`).join(' ');
+            const techLabels = technologies.slice(0, 3).map(tech => `<span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600">${escapeHtml(tech)}</span>`).join(' ');
             const extra = technologies.length > 3 ? `<span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600">+${technologies.length - 3}</span>` : '';
+            const title = escapeHtml(project.title);
             return `
                 <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                     <td class="px-5 py-4">
                         <div class="flex items-center gap-3">
-                            ${project.image ? `<img src="${project.image}" alt="${project.title}" class="h-12 w-12 rounded-2xl object-cover">` : `<span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-lg font-semibold text-slate-600">${project.title?.charAt(0) ?? 'P'}</span>`}
+                            ${project.image ? `<img src="${escapeHtml(project.image)}" alt="${title}" class="h-12 w-12 rounded-2xl object-cover">` : `<span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-lg font-semibold text-slate-600">${title.charAt(0) || 'P'}</span>`}
                             <div>
-                                <div class="text-sm font-semibold text-slate-900">${project.title}</div>
-                                <div class="text-xs text-slate-500">${project.slug}</div>
+                                <div class="text-sm font-semibold text-slate-900">${title}</div>
+                                <div class="text-xs text-slate-500">${escapeHtml(project.slug)}</div>
                             </div>
                         </div>
                     </td>
-                    <td class="px-5 py-4 text-sm text-slate-700">${project.client ?? '—'}</td>
+                    <td class="px-5 py-4 text-sm text-slate-700">${escapeHtml(project.client ?? '—')}</td>
                     <td class="px-5 py-4 space-y-1 text-xs">${techLabels} ${extra}</td>
                     <td class="px-5 py-4 text-sm text-slate-600">${formatDate(project.completion_date)}</td>
                     <td class="px-5 py-4">

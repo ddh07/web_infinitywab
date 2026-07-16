@@ -2,10 +2,18 @@
 
 namespace App\Models;
 
+use App\Support\HtmlSanitizer;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Service extends Model
 {
+    protected static function booted(): void
+    {
+        static::saved(fn () => Cache::forget('footer.composer.data'));
+        static::deleted(fn () => Cache::forget('footer.composer.data'));
+    }
+
     protected $fillable = [
         'title',
         'slug',
@@ -23,6 +31,11 @@ class Service extends Model
         'is_featured' => 'boolean',
         'order' => 'integer',
     ];
+
+    public function setContentAttribute(?string $value): void
+    {
+        $this->attributes['content'] = HtmlSanitizer::sanitize($value);
+    }
 
     public function scopeActive($query)
     {

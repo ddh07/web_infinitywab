@@ -258,19 +258,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const rows = filtered.map(product => {
             const coverImage = Array.isArray(product.images) ? product.images[0] : product.images;
             const cleanCategory = product.category ? product.category.charAt(0).toUpperCase() + product.category.slice(1) : '—';
+            const title = escapeHtml(product.title);
             return `
                 <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                     <td class="px-5 py-4">
                         <div class="flex items-center gap-3">
-                            ${coverImage ? `<img src="${coverImage}" alt="${product.title}" class="h-12 w-12 rounded-2xl object-cover">` : `<span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-lg font-semibold text-slate-600">${product.title?.charAt(0) ?? 'P'}</span>`}
+                            ${coverImage ? `<img src="${escapeHtml(coverImage)}" alt="${title}" class="h-12 w-12 rounded-2xl object-cover">` : `<span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-lg font-semibold text-slate-600">${title.charAt(0) || 'P'}</span>`}
                             <div>
-                                <div class="text-sm font-semibold text-slate-900">${product.title}</div>
-                                <div class="text-xs text-slate-500">${product.slug}</div>
-                                <p class="text-xs text-slate-400">${product.description ?? '—'}</p>
+                                <div class="text-sm font-semibold text-slate-900">${title}</div>
+                                <div class="text-xs text-slate-500">${escapeHtml(product.slug)}</div>
+                                <p class="text-xs text-slate-400">${escapeHtml(product.description ?? '—')}</p>
                             </div>
                         </div>
                     </td>
-                    <td class="px-5 py-4 text-sm text-slate-700">${cleanCategory}</td>
+                    <td class="px-5 py-4 text-sm text-slate-700">${escapeHtml(cleanCategory)}</td>
                     <td class="px-5 py-4 text-sm font-semibold text-slate-800">${formatPrice(product.price)}</td>
                     <td class="px-5 py-4">
                         <div class="flex flex-wrap items-center gap-2">

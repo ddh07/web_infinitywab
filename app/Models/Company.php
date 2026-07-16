@@ -3,9 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Company extends Model
 {
+    protected static function booted(): void
+    {
+        static::saved(fn () => Cache::forget('footer.composer.data'));
+        static::deleted(fn () => Cache::forget('footer.composer.data'));
+    }
+
     protected $fillable = [
         'name',
         'description',

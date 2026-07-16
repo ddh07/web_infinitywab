@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\HtmlSanitizer;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -28,6 +29,11 @@ class Product extends Model
         'images' => 'array',
         'specifications' => 'array',
     ];
+
+    public function setContentAttribute(?string $value): void
+    {
+        $this->attributes['content'] = HtmlSanitizer::sanitize($value);
+    }
 
     public function scopeActive($query)
     {

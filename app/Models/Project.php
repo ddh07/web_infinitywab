@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\HtmlSanitizer;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
@@ -33,6 +34,11 @@ class Project extends Model
         'completion_date' => 'date',
         'technologies' => 'array',
     ];
+
+    public function setContentAttribute(?string $value): void
+    {
+        $this->attributes['content'] = HtmlSanitizer::sanitize($value);
+    }
 
     public function scopeActive($query)
     {

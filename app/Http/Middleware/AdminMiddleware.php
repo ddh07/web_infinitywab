@@ -23,10 +23,7 @@ class AdminMiddleware
 
         $user = Auth::user();
 
-        // Vérifier si l'utilisateur est admin (flag en base, avec fallback historique sur l'email)
-        $isAdmin = (bool) ($user->is_admin ?? false) || ($user->email === 'admin@infinity-wab.bf');
-
-        if (!$isAdmin) {
+        if (!$user->is_admin) {
             return redirect()->route('home')->with('error', 'Accès non autorisé. Réservé aux administrateurs.');
         }
 

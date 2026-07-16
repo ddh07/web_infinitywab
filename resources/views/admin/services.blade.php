@@ -219,22 +219,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         servicesEmptyState.classList.add('hidden');
-        const rows = filtered.map(service => `
+        const rows = filtered.map(service => {
+            const title = escapeHtml(service.title);
+            return `
             <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                 <td class="px-5 py-4">
                     <div class="flex items-center gap-3">
                         ${service.icon
-                            ? `<i class="${service.icon} text-slate-500 text-lg"></i>`
-                            : `<span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-600">${service.title?.charAt(0) ?? 'S'}</span>`
+                            ? `<i class="${escapeHtml(service.icon)} text-slate-500 text-lg"></i>`
+                            : `<span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-600">${title.charAt(0) || 'S'}</span>`
                         }
                         <div>
-                            <div class="text-sm font-semibold text-slate-900">${service.title}</div>
-                            <div class="text-xs text-slate-500">${service.slug}</div>
+                            <div class="text-sm font-semibold text-slate-900">${title}</div>
+                            <div class="text-xs text-slate-500">${escapeHtml(service.slug)}</div>
                         </div>
                     </div>
                 </td>
                 <td class="px-5 py-4 text-sm text-slate-600" style="-webkit-box-orient: vertical; -webkit-line-clamp: 2; display: -webkit-box; overflow: hidden;">
-                    ${service.description ?? '—'}
+                    ${escapeHtml(service.description ?? '—')}
                 </td>
                 <td class="px-5 py-4">
                     <span class="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold ${service.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
@@ -248,7 +250,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button onclick="deleteService(${service.id})" class="text-rose-600 hover:text-rose-900">Supprimer</button>
                 </td>
             </tr>
-        `).join('');
+        `;
+        }).join('');
 
         servicesTableBody.innerHTML = rows;
     }

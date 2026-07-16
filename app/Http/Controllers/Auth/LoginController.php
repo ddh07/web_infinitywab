@@ -14,7 +14,7 @@ class LoginController extends Controller
     {
         $user = $this->guard()->user();
 
-        if ($user && ((bool) ($user->is_admin ?? false) || ($user->email === 'admin@infinity-wab.bf'))) {
+        if ($user && $user->is_admin) {
             return '/admin';
         }
 

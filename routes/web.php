@@ -150,8 +150,3 @@ Route::prefix('api/admin')->name('api.admin.')->middleware(['admin', 'verified']
 
 // Routes d'authentification + vérification d'email
 Auth::routes(['verify' => true]);
-
-// Route de test pour l'API
-Route::get('/test-api', function () {
-    return view('test_api');
-})->name('test.api');
