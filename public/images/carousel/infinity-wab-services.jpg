@@ -1,0 +1,25 @@
+<!-- Placeholder pour l'image des services Infinity WAB -->
+<!-- Cette image sera remplacée par une vraie image montrant les services -->
+<div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-family: Arial, sans-serif;">
+    <div style="text-align: center; padding: 40px;">
+        <h1 style="font-size: 3em; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Infinity WAB</h1>
+        <h2 style="font-size: 2em; margin-bottom: 30px;">Nos Services</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 600px; margin: 0 auto;">
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; backdrop-filter: blur(5px);">
+                <div style="font-size: 2em; margin-bottom: 10px;">💻</div>
+                <h3 style="font-size: 1.2em; margin-bottom: 10px;">Maintenance</h3>
+                <p style="font-size: 0.9em; opacity: 0.9;">Support technique</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; backdrop-filter: blur(5px);">
+                <div style="font-size: 2em; margin-bottom: 10px;">🌐</div>
+                <h3 style="font-size: 1.2em; margin-bottom: 10px;">Réseaux</h3>
+                <p style="font-size: 0.9em; opacity: 0.9;">Infrastructure</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; backdrop-filter: blur(5px);">
+                <div style="font-size: 2em; margin-bottom: 10px;">📱</div>
+                <h3 style="font-size: 1.2em; margin-bottom: 10px;">Développement</h3>
+                <p style="font-size: 0.9em; opacity: 0.9;">Applications</p>
+            </div>
+        </div>
+    </div>
+</div>

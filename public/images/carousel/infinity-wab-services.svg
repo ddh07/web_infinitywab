@@ -1,0 +1,62 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1" />
+    </linearGradient>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1920" height="1080" fill="url(#bgGradient)"/>
+  
+  <!-- Grid Pattern -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/>
+  </pattern>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
+  
+  <!-- Floating Elements -->
+  <circle cx="200" cy="200" r="80" fill="white" opacity="0.05" filter="url(#blur)"/>
+  <circle cx="1720" cy="300" r="120" fill="white" opacity="0.05" filter="url(#blur)"/>
+  <circle cx="400" cy="800" r="100" fill="white" opacity="0.05" filter="url(#blur)"/>
+  <circle cx="1500" cy="900" r="90" fill="white" opacity="0.05" filter="url(#blur)"/>
+  
+  <!-- Service Icons Background -->
+  <g transform="translate(960, 540)">
+    <!-- Maintenance Icon -->
+    <g transform="translate(-400, -100)">
+      <rect x="-60" y="-60" width="120" height="120" rx="20" fill="white" opacity="0.1"/>
+      <text x="0" y="5" text-anchor="middle" fill="white" font-size="48" font-family="Arial">💻</text>
+      <text x="0" y="80" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Maintenance</text>
+      <text x="0" y="100" text-anchor="middle" fill="white" font-size="14" opacity="0.8">Support technique</text>
+    </g>
+    
+    <!-- Network Icon -->
+    <g transform="translate(0, -100)">
+      <rect x="-60" y="-60" width="120" height="120" rx="20" fill="white" opacity="0.1"/>
+      <text x="0" y="5" text-anchor="middle" fill="white" font-size="48" font-family="Arial">🌐</text>
+      <text x="0" y="80" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Réseaux</text>
+      <text x="0" y="100" text-anchor="middle" fill="white" font-size="14" opacity="0.8">Infrastructure</text>
+    </g>
+    
+    <!-- Development Icon -->
+    <g transform="translate(400, -100)">
+      <rect x="-60" y="-60" width="120" height="120" rx="20" fill="white" opacity="0.1"/>
+      <text x="0" y="5" text-anchor="middle" fill="white" font-size="48" font-family="Arial">📱</text>
+      <text x="0" y="80" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Développement</text>
+      <text x="0" y="100" text-anchor="middle" fill="white" font-size="14" opacity="0.8">Applications</text>
+    </g>
+  </g>
+  
+  <!-- Title -->
+  <text x="960" y="200" text-anchor="middle" fill="white" font-size="72" font-weight="bold" font-family="Arial, sans-serif">Infinity WAB</text>
+  <text x="960" y="280" text-anchor="middle" fill="white" font-size="48" font-family="Arial, sans-serif" opacity="0.9">Nos Services</text>
+  
+  <!-- Decorative Lines -->
+  <path d="M 200 540 Q 960 400 1720 540" stroke="white" stroke-width="2" opacity="0.1" fill="none"/>
+  <path d="M 200 540 Q 960 680 1720 540" stroke="white" stroke-width="2" opacity="0.1" fill="none"/>
+</svg>

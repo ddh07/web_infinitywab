@@ -1,0 +1,43 @@
+{
+  "railpackVersion": "0.15.4",
+  "resolvedPackages": {
+    "node": {
+      "name": "node",
+      "requestedVersion": "22",
+      "resolvedVersion": "22.22.2",
+      "source": "railpack default"
+    },
+    "php": {
+      "name": "php",
+      "requestedVersion": "8.4",
+      "resolvedVersion": "8.4.20",
+      "source": "composer.json \u003e require \u003e php"
+    }
+  },
+  "metadata": {
+    "phpLaravel": "true",
+    "providers": "php"
+  },
+  "detectedProviders": [
+    "php"
+  ],
+  "logs": [
+    {
+      "Level": "info",
+      "Msg": "Detected Php"
+    },
+    {
+      "Level": "info",
+      "Msg": "Found Laravel app"
+    },
+    {
+      "Level": "info",
+      "Msg": "Installing Node"
+    },
+    {
+      "Level": "info",
+      "Msg": "Pruning node dependencies"
+    }
+  ],
+  "success": true
+}
