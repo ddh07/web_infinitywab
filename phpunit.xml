@@ -32,13 +32,6 @@
             <directory>app/Providers</directory>
         </exclude>
     </source>
-    <coverage>
-        <report>
-            <clover outputFile="coverage.xml"/>
-            <html outputDirectory="coverage-html"/>
-            <text outputFile="coverage.txt"/>
-        </report>
-    </coverage>
     <logging>
         <junit outputFile="tests-results.xml"/>
         <teamcity outputFile="tests-teamcity.log"/>
