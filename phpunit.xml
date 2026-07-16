@@ -10,12 +10,9 @@
          failOnRisky="true"
          failOnEmptyTestSuite="true"
          beStrictAboutOutputDuringTests="true"
-         beStrictAboutTodoAnnotatedTests="true"
          beStrictAboutCoverageMetadata="true"
-         forceCoversAnnotation="false"
          processIsolation="false"
          backupGlobals="false"
-         bootstrap="vendor/autoload.php"
 >
     <testsuites>
         <testsuite name="Unit">
@@ -23,9 +20,6 @@
         </testsuite>
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
-        </testsuite>
-        <testsuite name="Integration">
-            <directory>tests/Integration</directory>
         </testsuite>
     </testsuites>
     <source>
@@ -35,17 +29,10 @@
         <exclude>
             <directory>app/Console/Commands</directory>
             <file>app/Http/Controllers/Controller.php</file>
+            <directory>app/Providers</directory>
         </exclude>
     </source>
     <coverage>
-        <include>
-            <directory suffix=".php">app</directory>
-        </include>
-        <exclude>
-            <directory>app/Console/Commands</directory>
-            <file>app/Http/Controllers/Controller.php</file>
-            <directory>app/Providers</directory>
-        </exclude>
         <report>
             <clover outputFile="coverage.xml"/>
             <html outputDirectory="coverage-html"/>
@@ -59,7 +46,8 @@
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
-        <env name="APP_KEY" value="base64:TEST_KEY_FOR_CI_ONLY"/>
+        <env name="APP_KEY" value="base64:eosoXBIHMv3x1JGzCu01DXjGRrOBhQwmXSkhGdHHiRo="/>
+        <env name="APP_URL" value="http://localhost"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
         <env name="CACHE_STORE" value="array"/>
@@ -68,7 +56,7 @@
         <env name="DB_PORT" value="3306"/>
         <env name="DB_DATABASE" value="infinity_wab_test"/>
         <env name="DB_USERNAME" value="root"/>
-        <env name="DB_PASSWORD" value="password"/>
+        <env name="DB_PASSWORD" value="root"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>

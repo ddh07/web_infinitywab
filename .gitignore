@@ -22,3 +22,8 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+/coverage.xml
+/coverage.txt
+/coverage-html
+/tests-results.xml
+/tests-teamcity.log
