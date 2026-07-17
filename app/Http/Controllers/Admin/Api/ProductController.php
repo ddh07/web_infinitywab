@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ProductRequest;
 use App\Models\Product;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -14,24 +14,9 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:products',
-            'description' => 'required|string|max:500',
-            'content' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'category' => 'required|string|max:100',
-            'images' => 'nullable|array',
-            'images.*' => 'string|max:255',
-            'specifications' => 'nullable|array',
-            'is_featured' => 'boolean',
-            'is_active' => 'boolean',
-            'order' => 'integer'
-        ]);
-
-        $product = Product::create($validated);
+        $product = Product::create($request->validated());
         return response()->json($product, 201);
     }
 
@@ -41,26 +26,10 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
         $product = Product::findOrFail($id);
-        
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:products,slug,' . $id,
-            'description' => 'required|string|max:500',
-            'content' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'category' => 'required|string|max:100',
-            'images' => 'nullable|array',
-            'images.*' => 'string|max:255',
-            'specifications' => 'nullable|array',
-            'is_featured' => 'boolean',
-            'is_active' => 'boolean',
-            'order' => 'integer'
-        ]);
-
-        $product->update($validated);
+        $product->update($request->validated());
         return response()->json($product);
     }
 

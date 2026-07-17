@@ -82,13 +82,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach($featured as $service)
                 @php
-                    $serviceImagePath = $service->image ? ltrim($service->image, '/') : null;
-                    if ($serviceImagePath && !str_starts_with($serviceImagePath, 'images/')) {
-                        $serviceImagePath = 'images/' . $serviceImagePath;
-                    }
-                    $serviceCover = ($serviceImagePath && file_exists(public_path($serviceImagePath)))
-                        ? asset($serviceImagePath)
-                        : asset('images/services/defaukt_services_img.png');
+                    $serviceCover = $service->cover_url;
                 @endphp
                 <article class="group relative overflow-hidden rounded-3xl border border-white/10 bg-slate-900/60 p-6 shadow-2xl shadow-black/40 transition-all duration-500 hover:translate-y-1 hover:bg-slate-900/80">
                     <div class="absolute inset-0">
@@ -137,13 +131,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             @foreach($services as $service)
                 @php
-                    $serviceImagePath = $service->image ? ltrim($service->image, '/') : null;
-                    if ($serviceImagePath && !str_starts_with($serviceImagePath, 'images/')) {
-                        $serviceImagePath = 'images/' . $serviceImagePath;
-                    }
-                    $serviceCover = ($serviceImagePath && file_exists(public_path($serviceImagePath)))
-                        ? asset($serviceImagePath)
-                        : asset('images/services/defaukt_services_img.png');
+                    $serviceCover = $service->cover_url;
                 @endphp
                 <article class="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950/30 p-6 shadow-2xl shadow-black/40 transition duration-500 hover:-translate-y-1 hover:border-white/30">
                     <div class="absolute inset-0">

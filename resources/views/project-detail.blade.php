@@ -14,13 +14,7 @@
         ['label' => 'Statut', 'value' => ucfirst(str_replace('_', ' ', $project->status ?? 'en_cours'))],
     ]);
 
-    $projectImagePath = $project->image ? ltrim($project->image, '/') : null;
-    if ($projectImagePath && !str_starts_with($projectImagePath, 'images/')) {
-        $projectImagePath = 'images/' . $projectImagePath;
-    }
-    $projectCover = ($projectImagePath && file_exists(public_path($projectImagePath)))
-        ? asset($projectImagePath)
-        : asset('images/placeholder-project.jpg');
+    $projectCover = $project->cover_url;
 @endphp
 
 <!-- Hero -->
@@ -162,7 +156,7 @@
                 @foreach($relatedProjects as $related)
                     <article class="bg-gradient-to-br from-slate-950/80 to-slate-900/60 rounded-3xl border border-white/10 p-6 shadow-2xl shadow-black/60 space-y-4">
                         <div class="h-40 w-full overflow-hidden rounded-2xl">
-                            <img src="{{ asset($related->image ?? 'images/placeholder-project.jpg') }}" alt="{{ $related->title }}" class="w-full h-full object-cover">
+                            <img src="{{ $related->cover_url }}" alt="{{ $related->title }}" class="w-full h-full object-cover">
                         </div>
                         <h3 class="text-xl font-semibold text-white">{{ $related->title }}</h3>
                         <p class="text-sm text-white/70 line-clamp-3">{{ Str::limit($related->description, 120) }}</p>

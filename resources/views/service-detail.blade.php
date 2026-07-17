@@ -9,13 +9,7 @@
 
     $supportLabel = $service->is_active ? 'Support 24/7' : 'Phase d\'ingénierie';
 
-    $serviceImagePath = $service->image ? ltrim($service->image, '/') : null;
-    if ($serviceImagePath && !str_starts_with($serviceImagePath, 'images/')) {
-        $serviceImagePath = 'images/' . $serviceImagePath;
-    }
-    $serviceCover = ($serviceImagePath && file_exists(public_path($serviceImagePath)))
-        ? asset($serviceImagePath)
-        : asset('images/services/defaukt_services_img.png');
+    $serviceCover = $service->cover_url;
 @endphp
 
 <!-- Service hero -->

@@ -70,13 +70,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach($heroProducts as $product)
                 @php
-                    $images = is_string($product->images) ? json_decode($product->images, true) : ($product->images ?? []);
-                    $coverPath = $images[0] ?? 'images/placeholder-product.png';
-                    $coverPath = ltrim($coverPath, '/');
-                    if (!str_starts_with($coverPath, 'images/')) {
-                        $coverPath = 'images/' . $coverPath;
-                    }
-                    $cover = file_exists(public_path($coverPath)) ? asset($coverPath) : asset('images/placeholder-product.png');
+                    $cover = $product->cover_url;
                 @endphp
                 <article class="relative rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900/70 to-slate-950/30 p-6 overflow-hidden shadow-2xl shadow-black/50">
                     <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-transparent to-purple-500/10 opacity-0 transition-all group-hover:opacity-100"></div>

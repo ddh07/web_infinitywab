@@ -154,74 +154,13 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const serviceSearch = document.getElementById('serviceSearch');
-    const serviceStatus = document.getElementById('serviceStatus');
-    const servicesTableBody = document.getElementById('servicesTableBody');
-    const servicesEmptyState = document.getElementById('servicesEmptyState');
-    const serviceModal = document.getElementById('serviceModal');
-    const serviceForm = document.getElementById('serviceForm');
-    const serviceModalTitle = document.getElementById('serviceModalTitle');
-    const totalServices = document.getElementById('totalServices');
-    const activeServices = document.getElementById('activeServices');
-    const inactiveServices = document.getElementById('inactiveServices');
-    const featuredServices = document.getElementById('featuredServices');
-    const serviceTitleInput = document.getElementById('serviceTitle');
-    const serviceSlugInput = document.getElementById('serviceSlug');
-    const serviceDescriptionInput = document.getElementById('serviceDescription');
-    const serviceContentInput = document.getElementById('serviceContent');
-    const serviceIconInput = document.getElementById('serviceIcon');
-    const serviceImageInput = document.getElementById('serviceImage');
-    const serviceOrderInput = document.getElementById('serviceOrder');
     const serviceIsActiveInput = document.getElementById('serviceIsActive');
     const serviceIsFeaturedInput = document.getElementById('serviceIsFeatured');
+    const serviceOrderInput = document.getElementById('serviceOrder');
 
-    let servicesData = [];
-    let currentServiceId = null;
-
-    function lockBodyScroll(lock) {
-        document.body.style.overflow = lock ? 'hidden' : '';
-    }
-
-    function setServiceStats(data) {
-        const total = data.length;
-        const active = data.filter(service => service.is_active).length;
-        const featured = data.filter(service => service.is_featured).length;
-        totalServices.textContent = total;
-        activeServices.textContent = active;
-        inactiveServices.textContent = total - active;
-        featuredServices.textContent = featured;
-    }
-
-    function renderServiceRows() {
-        if (!servicesData.length) {
-            servicesTableBody.innerHTML = '';
-            servicesEmptyState.classList.remove('hidden');
-            return;
-        }
-
-        const term = serviceSearch.value.trim().toLowerCase();
-        const status = serviceStatus.value;
-        const filtered = servicesData
-            .filter(item => {
-                if (status === 'active' && !item.is_active) return false;
-                if (status === 'inactive' && item.is_active) return false;
-                if (status === 'featured' && !item.is_featured) return false;
-                if (!term) return true;
-                const haystack = [item.title, item.slug, item.description].filter(Boolean).join(' ').toLowerCase();
-                return haystack.includes(term);
-            })
-            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-
-        if (!filtered.length) {
-            servicesTableBody.innerHTML = '';
-            servicesEmptyState.classList.remove('hidden');
-            return;
-        }
-
-        servicesEmptyState.classList.add('hidden');
-        const rows = filtered.map(service => {
-            const title = escapeHtml(service.title);
-            return `
+    function renderServiceRow(service) {
+        const title = escapeHtml(service.title);
+        return `
             <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                 <td class="px-5 py-4">
                     <div class="flex items-center gap-3">
@@ -251,167 +190,84 @@ document.addEventListener('DOMContentLoaded', () => {
                 </td>
             </tr>
         `;
-        }).join('');
-
-        servicesTableBody.innerHTML = rows;
     }
 
-    function loadServices() {
-        fetch('/api/admin/services')
-            .then(response => response.json())
-            .then(data => {
-                servicesData = Array.isArray(data) ? data : [];
-                setServiceStats(servicesData);
-                renderServiceRows();
-            })
-            .catch(() => {
-                showAlert('Impossible de charger les services.', 'error');
-            });
-    }
-
-    function openServiceModal(serviceId = null) {
-        currentServiceId = serviceId;
-        serviceModal.classList.remove('hidden');
-        lockBodyScroll(true);
-        serviceModalTitle.textContent = serviceId ? 'Modifier un service' : 'Ajouter un service';
-
-        if (serviceId) {
-            fetch(`/api/admin/services/${serviceId}`)
-                .then(response => response.json())
-                .then(service => {
-                    serviceTitleInput.value = service.title ?? '';
-                    serviceSlugInput.value = service.slug ?? '';
-                    serviceDescriptionInput.value = service.description ?? '';
-                    serviceContentInput.value = service.content ?? '';
-                    serviceIconInput.value = service.icon ?? '';
-                    serviceImageInput.value = service.image ?? '';
-                    serviceOrderInput.value = service.order ?? 0;
-                    serviceIsActiveInput.checked = Boolean(service.is_active);
-                    serviceIsFeaturedInput.checked = Boolean(service.is_featured);
-                })
-                .catch(() => {
-                    showAlert('Impossible de charger ce service.', 'error');
-                });
-        } else {
-            serviceForm.reset();
+    const resource = createCrudResource({
+        endpoint: '/api/admin/services',
+        entityName: 'service',
+        entityLabel: 'un service',
+        entityLabelCapitalized: 'Service',
+        elements: {
+            search: 'serviceSearch',
+            statusFilter: 'serviceStatus',
+            tableBody: 'servicesTableBody',
+            emptyState: 'servicesEmptyState',
+            modal: 'serviceModal',
+            form: 'serviceForm',
+            modalTitle: 'serviceModalTitle',
+            titleInput: 'serviceTitle',
+            slugInput: 'serviceSlug',
+        },
+        computeStats(data) {
+            const total = data.length;
+            const active = data.filter((service) => service.is_active).length;
+            const featured = data.filter((service) => service.is_featured).length;
+            return {
+                totalServices: total,
+                activeServices: active,
+                inactiveServices: total - active,
+                featuredServices: featured,
+            };
+        },
+        matchesFilters(item, filters) {
+            if (filters.status === 'active' && !item.is_active) return false;
+            if (filters.status === 'inactive' && item.is_active) return false;
+            if (filters.status === 'featured' && !item.is_featured) return false;
+            if (!filters.term) return true;
+            const haystack = [item.title, item.slug, item.description].filter(Boolean).join(' ').toLowerCase();
+            return haystack.includes(filters.term);
+        },
+        renderRow: renderServiceRow,
+        fillForm(service) {
+            document.getElementById('serviceTitle').value = service.title ?? '';
+            document.getElementById('serviceSlug').value = service.slug ?? '';
+            document.getElementById('serviceDescription').value = service.description ?? '';
+            document.getElementById('serviceContent').value = service.content ?? '';
+            document.getElementById('serviceIcon').value = service.icon ?? '';
+            document.getElementById('serviceImage').value = service.image ?? '';
+            serviceOrderInput.value = service.order ?? 0;
+            serviceIsActiveInput.checked = Boolean(service.is_active);
+            serviceIsFeaturedInput.checked = Boolean(service.is_featured);
+        },
+        resetExtras() {
             serviceIsActiveInput.checked = true;
             serviceIsFeaturedInput.checked = false;
             serviceOrderInput.value = '0';
-        }
-    }
-
-    function closeServiceModal() {
-        serviceModal.classList.add('hidden');
-        serviceForm.reset();
-        serviceOrderInput.value = '0';
-        currentServiceId = null;
-        lockBodyScroll(false);
-    }
-
-    function deleteService(serviceId) {
-        if (!confirm('Êtes-vous sûr de vouloir supprimer ce service ?')) {
-            return;
-        }
-        fetch(`/api/admin/services/${serviceId}`, { method: 'DELETE' })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error();
-                }
-                return response.json();
-            })
-            .then(() => {
-                showAlert('Service supprimé avec succès.');
-                loadServices();
-            })
-            .catch(() => {
-                showAlert('Impossible de supprimer ce service.', 'error');
-            });
-    }
-
-    function handleServiceFormSubmit(event) {
-        event.preventDefault();
-        const payload = {
-            title: serviceTitleInput.value.trim(),
-            slug: serviceSlugInput.value.trim(),
-            description: serviceDescriptionInput.value.trim(),
-            content: serviceContentInput.value.trim(),
-            icon: serviceIconInput.value.trim() || null,
-            image: serviceImageInput.value.trim() || null,
-            order: parseInt(serviceOrderInput.value, 10) || 0,
-            is_active: serviceIsActiveInput.checked,
-            is_featured: serviceIsFeaturedInput.checked,
-        };
-
-        if (!payload.title || !payload.slug || !payload.description) {
-            showAlert('Veuillez remplir les champs obligatoires.', 'error');
-            return;
-        }
-
-        const url = currentServiceId ? `/api/admin/services/${currentServiceId}` : '/api/admin/services';
-        const method = currentServiceId ? 'PUT' : 'POST';
-
-        fetch(url, {
-            method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => { throw err; });
-                }
-                return response.json();
-            })
-            .then(() => {
-                showAlert(`Service ${currentServiceId ? 'modifié' : 'créé'} avec succès.`);
-                closeServiceModal();
-                loadServices();
-            })
-            .catch(async error => {
-                let message = 'Erreur lors de la sauvegarde.';
-                if (error?.message) {
-                    message = error.message;
-                } else if (error?.errors) {
-                    message = Object.values(error.errors).flat().join(' ');
-                } else if (typeof error?.json === 'function') {
-                    const payload = await error.json().catch(() => null);
-                    if (payload?.message) {
-                        message = payload.message;
-                    }
-                }
-                showAlert(message, 'error');
-            });
-    }
-
-    function generateSlug(value) {
-        return value.toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-+|-+$/g, '');
-    }
-
-    serviceSearch.addEventListener('input', renderServiceRows);
-    serviceStatus.addEventListener('change', renderServiceRows);
-    serviceForm.addEventListener('submit', handleServiceFormSubmit);
-    serviceTitleInput.addEventListener('input', () => {
-        if (!currentServiceId) {
-            serviceSlugInput.value = generateSlug(serviceTitleInput.value);
-        }
+        },
+        buildPayload() {
+            return {
+                title: document.getElementById('serviceTitle').value.trim(),
+                slug: document.getElementById('serviceSlug').value.trim(),
+                description: document.getElementById('serviceDescription').value.trim(),
+                content: document.getElementById('serviceContent').value.trim(),
+                icon: document.getElementById('serviceIcon').value.trim() || null,
+                image: document.getElementById('serviceImage').value.trim() || null,
+                order: parseInt(serviceOrderInput.value, 10) || 0,
+                is_active: serviceIsActiveInput.checked,
+                is_featured: serviceIsFeaturedInput.checked,
+            };
+        },
+        validatePayload(payload) {
+            if (!payload.title || !payload.slug || !payload.description) {
+                return 'Veuillez remplir les champs obligatoires.';
+            }
+            return null;
+        },
     });
 
-    window.openServiceModal = openServiceModal;
-    window.closeServiceModal = closeServiceModal;
-    window.deleteService = deleteService;
-
-    // Close on background click + ESC
-    serviceModal.addEventListener('click', (e) => {
-        if (e.target === serviceModal) closeServiceModal();
-    });
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && serviceModal && !serviceModal.classList.contains('hidden')) {
-            closeServiceModal();
-        }
-    });
-
-    loadServices();
+    window.openServiceModal = resource.openModal;
+    window.closeServiceModal = resource.closeModal;
+    window.deleteService = resource.deleteItem;
 });
 </script>
 @endpush

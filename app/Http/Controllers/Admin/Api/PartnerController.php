@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\PartnerRequest;
 use App\Models\Partner;
-use Illuminate\Http\Request;
 
 class PartnerController extends Controller
 {
@@ -14,20 +14,9 @@ class PartnerController extends Controller
         return response()->json($partners);
     }
 
-    public function store(Request $request)
+    public function store(PartnerRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:500',
-            'website' => 'nullable|url',
-            'logo' => 'nullable|string|max:255',
-            'category' => 'required|in:technology,financial',
-            // Compat UI: "order" dans les formulaires, "sort_order" en base.
-            'order' => 'nullable|integer',
-            'sort_order' => 'nullable|integer',
-            'is_active' => 'boolean'
-        ]);
-
+        $validated = $request->validated();
         $validated['sort_order'] = $validated['sort_order'] ?? $validated['order'] ?? 0;
         unset($validated['order']);
 
@@ -41,22 +30,11 @@ class PartnerController extends Controller
         return response()->json($partner);
     }
 
-    public function update(Request $request, $id)
+    public function update(PartnerRequest $request, $id)
     {
         $partner = Partner::findOrFail($id);
-        
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:500',
-            'website' => 'nullable|url',
-            'logo' => 'nullable|string|max:255',
-            'category' => 'required|in:technology,financial',
-            // Compat UI: "order" dans les formulaires, "sort_order" en base.
-            'order' => 'nullable|integer',
-            'sort_order' => 'nullable|integer',
-            'is_active' => 'boolean'
-        ]);
 
+        $validated = $request->validated();
         $validated['sort_order'] = $validated['sort_order'] ?? $validated['order'] ?? $partner->sort_order ?? 0;
         unset($validated['order']);
 

@@ -8,8 +8,6 @@
     $images = is_string($product->images) ? json_decode($product->images, true) : ($product->images ?? []);
     $specs = is_string($product->specifications) ? json_decode($product->specifications, true) : ($product->specifications ?? []);
     $gallery = is_string($product->gallery) ? json_decode($product->gallery, true) : ($product->gallery ?? []);
-
-    $defaultProductCover = asset('images/placeholder-product.png');
 @endphp
 
 <!-- Hero -->
@@ -74,11 +72,7 @@
                         @foreach($images as $index => $image)
                             <div class="relative h-64">
                                 @php
-                                    $imagePath = ltrim((string) $image, '/');
-                                    if (!str_starts_with($imagePath, 'images/')) {
-                                        $imagePath = 'images/' . $imagePath;
-                                    }
-                                    $src = file_exists(public_path($imagePath)) ? asset($imagePath) : $defaultProductCover;
+                                    $src = \App\Support\ImagePath::resolve($image, 'images/placeholder-product.png');
                                 @endphp
                                 <img src="{{ $src }}" alt="{{ $product->title }} - image {{ $index + 1 }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
                             </div>
@@ -123,11 +117,7 @@
                         @foreach($gallery as $image)
                             <div class="rounded-2xl overflow-hidden h-48">
                                 @php
-                                    $imagePath = ltrim((string) $image, '/');
-                                    if (!str_starts_with($imagePath, 'images/')) {
-                                        $imagePath = 'images/' . $imagePath;
-                                    }
-                                    $src = file_exists(public_path($imagePath)) ? asset($imagePath) : $defaultProductCover;
+                                    $src = \App\Support\ImagePath::resolve($image, 'images/placeholder-product.png');
                                 @endphp
                                 <img src="{{ $src }}" alt="{{ $product->title }} galerie" class="w-full h-full object-cover transition-all duration-500 hover:scale-105">
                             </div>
@@ -175,13 +165,9 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 @foreach($relatedProducts as $related)
-                    @php
-                        $relatedImages = is_string($related->images) ? json_decode($related->images, true) : ($related->images ?? []);
-                        $thumb = $relatedImages[0] ?? 'images/placeholder-product.jpg';
-                    @endphp
                     <article class="rounded-3xl border border-white/10 bg-gradient-to-br from-slate-950/80 to-slate-900/60 p-6 shadow-2xl shadow-black/60 space-y-3">
                         <div class="h-40 w-full overflow-hidden rounded-2xl">
-                            <img src="{{ asset($thumb) }}" alt="{{ $related->title }}" class="w-full h-full object-cover">
+                            <img src="{{ $related->cover_url }}" alt="{{ $related->title }}" class="w-full h-full object-cover">
                         </div>
                         <h3 class="text-xl font-semibold text-white">{{ $related->title }}</h3>
                         <p class="text-sm text-white/70 line-clamp-3">{{ Str::limit($related->description, 120) }}</p>

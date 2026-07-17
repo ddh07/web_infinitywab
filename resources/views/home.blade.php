@@ -152,13 +152,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             @foreach($services as $service)
                 @php
-                    $serviceImagePath = $service->image ? ltrim($service->image, '/') : null;
-                    if ($serviceImagePath && !str_starts_with($serviceImagePath, 'images/')) {
-                        $serviceImagePath = 'images/' . $serviceImagePath;
-                    }
-                    $serviceCover = ($serviceImagePath && file_exists(public_path($serviceImagePath)))
-                        ? asset($serviceImagePath)
-                        : asset('images/services/defaukt_services_img.png');
+                    $serviceCover = $service->cover_url;
                 @endphp
                 <article class="rounded-3xl border border-white/5 bg-slate-900/60 p-6 shadow-2xl shadow-black/50 hover:border-white/20 transition">
                     <div class="mb-4 h-36 w-full overflow-hidden rounded-2xl border border-white/10">
@@ -194,13 +188,7 @@
                 <article class="rounded-3xl border border-white/5 bg-slate-950/40 p-6 shadow-2xl shadow-black/60 space-y-4">
                     <div class="h-40 w-full overflow-hidden rounded-2xl border border-white/10">
                         @php
-                            $projectImagePath = $project->image ? ltrim($project->image, '/') : null;
-                            if ($projectImagePath && !str_starts_with($projectImagePath, 'images/')) {
-                                $projectImagePath = 'images/' . $projectImagePath;
-                            }
-                            $projectCover = ($projectImagePath && file_exists(public_path($projectImagePath)))
-                                ? asset($projectImagePath)
-                                : asset('images/placeholder-project.jpg');
+                            $projectCover = $project->cover_url;
                         @endphp
                         <img src="{{ $projectCover }}" alt="{{ $project->title }}" class="h-full w-full object-cover transition-transform duration-500 hover:scale-105">
                     </div>
@@ -232,13 +220,7 @@
         <div class="lg:col-span-2 grid gap-6 sm:grid-cols-2">
             @foreach($featuredProducts as $product)
                 @php
-                    $images = is_string($product->images) ? json_decode($product->images, true) : ($product->images ?? []);
-                    $thumbPath = $images[0] ?? 'images/placeholder-product.png';
-                    $thumbPath = ltrim($thumbPath, '/');
-                    if (!str_starts_with($thumbPath, 'images/')) {
-                        $thumbPath = 'images/' . $thumbPath;
-                    }
-                    $thumb = file_exists(public_path($thumbPath)) ? asset($thumbPath) : asset('images/placeholder-product.png');
+                    $thumb = $product->cover_url;
                 @endphp
                 <article class="rounded-3xl border border-white/10 bg-slate-900/60 p-6 shadow-2xl shadow-black/60 space-y-3">
                     <div class="h-40 w-full overflow-hidden rounded-2xl border border-white/10">

@@ -12,7 +12,7 @@
         "lint:fix": "eslint resources/js --fix",
         "format": "prettier --write resources/js resources/css",
         "format:check": "prettier --check resources/js resources/css",
-        "type-check": "vue-tsc --noEmit",
+        "type-check": "tsc --noEmit",
         "audit": "npm audit --audit-level moderate",
         "ci": "npm run lint && npm run test && npm run type-check && npm run audit"
     },
@@ -21,10 +21,7 @@
         "@tailwindcss/postcss": "^4.3.3",
         "@typescript-eslint/eslint-plugin": "^8.64.0",
         "@typescript-eslint/parser": "^8.64.0",
-        "@vitejs/plugin-vue": "^6.0.8",
         "@vue/eslint-config-prettier": "^10.2.0",
-        "@vue/eslint-config-typescript": "^14.9.0",
-        "@vue/test-utils": "^2.4.11",
         "autoprefixer": "^10.5.4",
         "axios": "^1.18.1",
         "concurrently": "^10.0.3",
@@ -39,11 +36,6 @@
         "tailwindcss": "^4.3.3",
         "typescript": "^5.9.3",
         "vite": "^8.1.5",
-        "vitest": "^4.1.10",
-        "vue-tsc": "^3.3.7"
-    },
-    "dependencies": {
-        "vue": "^3.5.40",
-        "vue-router": "^5.2.0"
+        "vitest": "^4.1.10"
     }
 }

@@ -174,301 +174,148 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const productSearch = document.getElementById('productSearch');
-    const productCategory = document.getElementById('productCategory');
-    const productStatus = document.getElementById('productStatus');
-    const productsTableBody = document.getElementById('productsTableBody');
-    const productsEmptyState = document.getElementById('productsEmptyState');
-    const productModal = document.getElementById('productModal');
-    const productForm = document.getElementById('productForm');
-    const productModalTitle = document.getElementById('productModalTitle');
-    const totalProducts = document.getElementById('totalProducts');
-    const activeProducts = document.getElementById('activeProducts');
-    const featuredProducts = document.getElementById('featuredProducts');
-    const categoryProducts = document.getElementById('categoryProducts');
-    const productTitleInput = document.getElementById('productTitle');
-    const productSlugInput = document.getElementById('productSlug');
-    const productCategoryInput = document.getElementById('productCategoryInput');
-    const productPriceInput = document.getElementById('productPrice');
     const productOrderInput = document.getElementById('productOrder');
-    const productDescriptionInput = document.getElementById('productDescription');
-    const productContentInput = document.getElementById('productContent');
-    const productImagesInput = document.getElementById('productImages');
-    const productSpecificationsInput = document.getElementById('productSpecifications');
     const productFeaturedInput = document.getElementById('productIsFeatured');
     const productActiveInput = document.getElementById('productIsActive');
 
-    let productsData = [];
-    let currentProductId = null;
-
-    function lockBodyScroll(lock) {
-        document.body.style.overflow = lock ? 'hidden' : '';
-    }
-
     function formatPrice(value) {
-        if (value == null) {
-            return '—';
-        }
+        if (value == null) return '—';
         return `${Number(value).toLocaleString('fr-FR')} FCFA`;
     }
 
-    function setProductStats(data) {
-        const total = data.length;
-        const active = data.filter(product => product.is_active).length;
-        const featured = data.filter(product => product.is_featured).length;
-        const categories = new Set(data.map(product => product.category).filter(Boolean)).size;
-        totalProducts.textContent = total;
-        activeProducts.textContent = active;
-        featuredProducts.textContent = featured;
-        categoryProducts.textContent = categories;
-    }
-
-    function renderProductRows() {
-        if (!productsData.length) {
-            productsTableBody.innerHTML = '';
-            productsEmptyState.classList.remove('hidden');
-            return;
-        }
-
-        const term = productSearch.value.trim().toLowerCase();
-        const category = productCategory.value;
-        const status = productStatus.value;
-        const filtered = productsData
-            .filter(item => {
-                if (category && item.category !== category) {
-                    return false;
-                }
-                if (status === 'active' && !item.is_active) return false;
-                if (status === 'inactive' && item.is_active) return false;
-                if (status === 'featured' && !item.is_featured) return false;
-                if (!term) return true;
-                const haystack = [item.title, item.slug, item.category, item.description].filter(Boolean).join(' ').toLowerCase();
-                return haystack.includes(term);
-            })
-            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-
-        if (!filtered.length) {
-            productsTableBody.innerHTML = '';
-            productsEmptyState.classList.remove('hidden');
-            return;
-        }
-
-        productsEmptyState.classList.add('hidden');
-
-        const rows = filtered.map(product => {
-            const coverImage = Array.isArray(product.images) ? product.images[0] : product.images;
-            const cleanCategory = product.category ? product.category.charAt(0).toUpperCase() + product.category.slice(1) : '—';
-            const title = escapeHtml(product.title);
-            return `
-                <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                    <td class="px-5 py-4">
-                        <div class="flex items-center gap-3">
-                            ${coverImage ? `<img src="${escapeHtml(coverImage)}" alt="${title}" class="h-12 w-12 rounded-2xl object-cover">` : `<span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-lg font-semibold text-slate-600">${title.charAt(0) || 'P'}</span>`}
-                            <div>
-                                <div class="text-sm font-semibold text-slate-900">${title}</div>
-                                <div class="text-xs text-slate-500">${escapeHtml(product.slug)}</div>
-                                <p class="text-xs text-slate-400">${escapeHtml(product.description ?? '—')}</p>
-                            </div>
+    function renderProductRow(product) {
+        const coverImage = Array.isArray(product.images) ? product.images[0] : product.images;
+        const cleanCategory = product.category ? product.category.charAt(0).toUpperCase() + product.category.slice(1) : '—';
+        const title = escapeHtml(product.title);
+        return `
+            <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                <td class="px-5 py-4">
+                    <div class="flex items-center gap-3">
+                        ${coverImage ? `<img src="${escapeHtml(coverImage)}" alt="${title}" class="h-12 w-12 rounded-2xl object-cover">` : `<span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-lg font-semibold text-slate-600">${title.charAt(0) || 'P'}</span>`}
+                        <div>
+                            <div class="text-sm font-semibold text-slate-900">${title}</div>
+                            <div class="text-xs text-slate-500">${escapeHtml(product.slug)}</div>
+                            <p class="text-xs text-slate-400">${escapeHtml(product.description ?? '—')}</p>
                         </div>
-                    </td>
-                    <td class="px-5 py-4 text-sm text-slate-700">${escapeHtml(cleanCategory)}</td>
-                    <td class="px-5 py-4 text-sm font-semibold text-slate-800">${formatPrice(product.price)}</td>
-                    <td class="px-5 py-4">
-                        <div class="flex flex-wrap items-center gap-2">
-                            ${product.is_featured ? '<span class="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-[11px] font-semibold text-amber-700">Mis en avant</span>' : ''}
-                            <span class="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold ${product.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
-                                ${product.is_active ? 'Actif' : 'Inactif'}
-                            </span>
-                        </div>
-                    </td>
-                    <td class="px-5 py-4 text-sm font-semibold text-slate-700">
-                        <button onclick="openProductModal(${product.id})" class="mr-3 text-purple-600 hover:text-purple-900">Modifier</button>
-                        <button onclick="deleteProduct(${product.id})" class="text-rose-600 hover:text-rose-900">Supprimer</button>
-                    </td>
-                </tr>
-            `;
-        }).join('');
-
-        productsTableBody.innerHTML = rows;
+                    </div>
+                </td>
+                <td class="px-5 py-4 text-sm text-slate-700">${escapeHtml(cleanCategory)}</td>
+                <td class="px-5 py-4 text-sm font-semibold text-slate-800">${formatPrice(product.price)}</td>
+                <td class="px-5 py-4">
+                    <div class="flex flex-wrap items-center gap-2">
+                        ${product.is_featured ? '<span class="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-[11px] font-semibold text-amber-700">Mis en avant</span>' : ''}
+                        <span class="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold ${product.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
+                            ${product.is_active ? 'Actif' : 'Inactif'}
+                        </span>
+                    </div>
+                </td>
+                <td class="px-5 py-4 text-sm font-semibold text-slate-700">
+                    <button onclick="openProductModal(${product.id})" class="mr-3 text-purple-600 hover:text-purple-900">Modifier</button>
+                    <button onclick="deleteProduct(${product.id})" class="text-rose-600 hover:text-rose-900">Supprimer</button>
+                </td>
+            </tr>
+        `;
     }
 
-    function loadProducts() {
-        fetch('/api/admin/products')
-            .then(response => response.json())
-            .then(data => {
-                productsData = Array.isArray(data) ? data : [];
-                setProductStats(productsData);
-                renderProductRows();
-            })
-            .catch(() => {
-                showAlert('Impossible de charger les produits.', 'error');
-            });
-    }
-
-    function openProductModal(productId = null) {
-        currentProductId = productId;
-        productModal.classList.remove('hidden');
-        lockBodyScroll(true);
-        productModalTitle.textContent = productId ? 'Modifier un produit' : 'Ajouter un produit';
-
-        if (productId) {
-            fetch(`/api/admin/products/${productId}`)
-                .then(response => response.json())
-                .then(product => {
-                    productTitleInput.value = product.title ?? '';
-                    productSlugInput.value = product.slug ?? '';
-                    productCategoryInput.value = product.category ?? '';
-                    productPriceInput.value = product.price ?? '';
-                    productOrderInput.value = product.order ?? 0;
-                    productDescriptionInput.value = product.description ?? '';
-                    productContentInput.value = product.content ?? '';
-                    productImagesInput.value = Array.isArray(product.images) ? product.images.join('\n') : product.images ?? '';
-                    if (product.specifications && typeof product.specifications === 'object') {
-                        productSpecificationsInput.value = Object.entries(product.specifications).map(([key, value]) => `${key}: ${value}`).join('\n');
-                    } else {
-                        productSpecificationsInput.value = product.specifications ?? '';
-                    }
-                    productFeaturedInput.checked = Boolean(product.is_featured);
-                    productActiveInput.checked = Boolean(product.is_active);
-                })
-                .catch(() => {
-                    showAlert('Impossible de charger ce produit.', 'error');
-                });
-        } else {
-            productForm.reset();
+    const resource = createCrudResource({
+        endpoint: '/api/admin/products',
+        entityName: 'produit',
+        entityLabel: 'un produit',
+        entityLabelCapitalized: 'Produit',
+        elements: {
+            search: 'productSearch',
+            statusFilter: 'productStatus',
+            extraFilters: ['productCategory'],
+            tableBody: 'productsTableBody',
+            emptyState: 'productsEmptyState',
+            modal: 'productModal',
+            form: 'productForm',
+            modalTitle: 'productModalTitle',
+            titleInput: 'productTitle',
+            slugInput: 'productSlug',
+        },
+        computeStats(data) {
+            const total = data.length;
+            const active = data.filter((product) => product.is_active).length;
+            const featured = data.filter((product) => product.is_featured).length;
+            const categories = new Set(data.map((product) => product.category).filter(Boolean)).size;
+            return {
+                totalProducts: total,
+                activeProducts: active,
+                featuredProducts: featured,
+                categoryProducts: categories,
+            };
+        },
+        matchesFilters(item, filters) {
+            if (filters.productCategory && item.category !== filters.productCategory) return false;
+            if (filters.status === 'active' && !item.is_active) return false;
+            if (filters.status === 'inactive' && item.is_active) return false;
+            if (filters.status === 'featured' && !item.is_featured) return false;
+            if (!filters.term) return true;
+            const haystack = [item.title, item.slug, item.category, item.description].filter(Boolean).join(' ').toLowerCase();
+            return haystack.includes(filters.term);
+        },
+        renderRow: renderProductRow,
+        fillForm(product) {
+            document.getElementById('productTitle').value = product.title ?? '';
+            document.getElementById('productSlug').value = product.slug ?? '';
+            document.getElementById('productCategoryInput').value = product.category ?? '';
+            document.getElementById('productPrice').value = product.price ?? '';
+            productOrderInput.value = product.order ?? 0;
+            document.getElementById('productDescription').value = product.description ?? '';
+            document.getElementById('productContent').value = product.content ?? '';
+            document.getElementById('productImages').value = Array.isArray(product.images) ? product.images.join('\n') : product.images ?? '';
+            const specsInput = document.getElementById('productSpecifications');
+            if (product.specifications && typeof product.specifications === 'object') {
+                specsInput.value = Object.entries(product.specifications).map(([key, value]) => `${key}: ${value}`).join('\n');
+            } else {
+                specsInput.value = product.specifications ?? '';
+            }
+            productFeaturedInput.checked = Boolean(product.is_featured);
+            productActiveInput.checked = Boolean(product.is_active);
+        },
+        resetExtras() {
             productActiveInput.checked = true;
             productOrderInput.value = '0';
-        }
-    }
+        },
+        buildPayload() {
+            const imagesRaw = document.getElementById('productImages').value;
+            const images = imagesRaw ? imagesRaw.split(/[\r\n,]+/).map((url) => url.trim()).filter(Boolean) : [];
 
-    function closeProductModal() {
-        productModal.classList.add('hidden');
-        productForm.reset();
-        productOrderInput.value = '0';
-        currentProductId = null;
-        lockBodyScroll(false);
-    }
-
-    function deleteProduct(productId) {
-        if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
-            return;
-        }
-        fetch(`/api/admin/products/${productId}`, { method: 'DELETE' })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error();
-                }
-                return response.json();
-            })
-            .then(() => {
-                showAlert('Produit supprimé avec succès.');
-                loadProducts();
-            })
-            .catch(() => {
-                showAlert('Impossible de supprimer ce produit.', 'error');
+            const specsRaw = document.getElementById('productSpecifications').value;
+            const specLines = specsRaw ? specsRaw.split('\n').map((line) => line.trim()).filter(Boolean) : [];
+            const specs = {};
+            specLines.forEach((line) => {
+                const [key, ...rest] = line.split(':');
+                if (!key || !rest.length) return;
+                specs[key.trim()] = rest.join(':').trim();
             });
-    }
 
-    function handleProductForm(event) {
-        event.preventDefault();
-        const imagesValue = productImagesInput.value
-            ? productImagesInput.value.split(/[\r\n,]+/).map(url => url.trim()).filter(Boolean)
-            : [];
-        const specsInput = productSpecificationsInput.value
-            ? productSpecificationsInput.value.split('\n').map(line => line.trim()).filter(Boolean)
-            : [];
-        const specs = {};
-        specsInput.forEach(line => {
-            const [key, ...rest] = line.split(':');
-            if (!key || !rest.length) return;
-            specs[key.trim()] = rest.join(':').trim();
-        });
-
-        const payload = {
-            title: productTitleInput.value.trim(),
-            slug: productSlugInput.value.trim(),
-            category: productCategoryInput.value || null,
-            price: productPriceInput.value ? Number(productPriceInput.value) : null,
-            order: parseInt(productOrderInput.value, 10) || 0,
-            description: productDescriptionInput.value.trim(),
-            content: productContentInput.value.trim() || null,
-            images: imagesValue,
-            specifications: Object.keys(specs).length ? specs : null,
-            is_featured: productFeaturedInput.checked,
-            is_active: productActiveInput.checked,
-        };
-
-        if (!payload.title || !payload.slug || !payload.category || !payload.description) {
-            showAlert('Remplissez les champs obligatoires.', 'error');
-            return;
-        }
-
-        const url = currentProductId ? `/api/admin/products/${currentProductId}` : '/api/admin/products';
-        const method = currentProductId ? 'PUT' : 'POST';
-
-        fetch(url, {
-            method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => { throw err; });
-                }
-                return response.json();
-            })
-            .then(() => {
-                showAlert(`Produit ${currentProductId ? 'modifié' : 'créé'} avec succès.`);
-                closeProductModal();
-                loadProducts();
-            })
-            .catch(async error => {
-                let message = 'Erreur lors de la sauvegarde.';
-                if (error?.message) {
-                    message = error.message;
-                } else if (error?.errors) {
-                    message = Object.values(error.errors).flat().join(' ');
-                } else if (typeof error?.json === 'function') {
-                    const payload = await error.json().catch(() => null);
-                    if (payload?.message) {
-                        message = payload.message;
-                    }
-                }
-                showAlert(message, 'error');
-            });
-    }
-
-    function generateSlug(value) {
-        return value.toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-+|-+$/g, '');
-    }
-
-    productSearch.addEventListener('input', renderProductRows);
-    productCategory.addEventListener('change', renderProductRows);
-    productStatus.addEventListener('change', renderProductRows);
-    productForm.addEventListener('submit', handleProductForm);
-    productTitleInput.addEventListener('input', () => {
-        if (!currentProductId) {
-            productSlugInput.value = generateSlug(productTitleInput.value);
-        }
+            return {
+                title: document.getElementById('productTitle').value.trim(),
+                slug: document.getElementById('productSlug').value.trim(),
+                category: document.getElementById('productCategoryInput').value || null,
+                price: document.getElementById('productPrice').value ? Number(document.getElementById('productPrice').value) : null,
+                order: parseInt(productOrderInput.value, 10) || 0,
+                description: document.getElementById('productDescription').value.trim(),
+                content: document.getElementById('productContent').value.trim() || null,
+                images,
+                specifications: Object.keys(specs).length ? specs : null,
+                is_featured: productFeaturedInput.checked,
+                is_active: productActiveInput.checked,
+            };
+        },
+        validatePayload(payload) {
+            if (!payload.title || !payload.slug || !payload.category || !payload.description) {
+                return 'Remplissez les champs obligatoires.';
+            }
+            return null;
+        },
     });
 
-    window.openProductModal = openProductModal;
-    window.closeProductModal = closeProductModal;
-    window.deleteProduct = deleteProduct;
-
-    // Close on background click + ESC
-    productModal.addEventListener('click', (e) => {
-        if (e.target === productModal) closeProductModal();
-    });
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && productModal && !productModal.classList.contains('hidden')) {
-            closeProductModal();
-        }
-    });
-
-    loadProducts();
+    window.openProductModal = resource.openModal;
+    window.closeProductModal = resource.closeModal;
+    window.deleteProduct = resource.deleteItem;
 });
 </script>
 @endpush

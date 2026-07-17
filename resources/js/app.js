@@ -1,5 +1,8 @@
 import './bootstrap';
 import { initContactCarousel } from './pages/contact-carousel';
+import { createCrudResource } from './admin/crud-resource';
+
+window.createCrudResource = createCrudResource;
 
 function initMobileMenu() {
     const button = document.querySelector('[data-mobile-menu-button]');

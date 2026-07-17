@@ -97,13 +97,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach($projects as $project)
                 @php
-                    $projectImagePath = $project->image ? ltrim($project->image, '/') : null;
-                    if ($projectImagePath && !str_starts_with($projectImagePath, 'images/')) {
-                        $projectImagePath = 'images/' . $projectImagePath;
-                    }
-                    $projectCover = ($projectImagePath && file_exists(public_path($projectImagePath)))
-                        ? asset($projectImagePath)
-                        : asset('images/placeholder-project.jpg');
+                    $projectCover = $project->cover_url;
                 @endphp
                 <article class="flex flex-col rounded-3xl border border-white/10 bg-slate-950/50 shadow-2xl shadow-black/60 overflow-hidden transition hover:-translate-y-1">
                     <div class="h-48 bg-gradient-to-br from-blue-500/10 to-purple-500/10 relative">

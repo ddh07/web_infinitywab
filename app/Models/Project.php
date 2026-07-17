@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\HtmlSanitizer;
+use App\Support\ImagePath;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
@@ -40,6 +41,11 @@ class Project extends Model
         $this->attributes['content'] = HtmlSanitizer::sanitize($value);
     }
 
+    public function getCoverUrlAttribute(): string
+    {
+        return ImagePath::resolve($this->image, 'images/placeholder-project.jpg');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
@@ -53,5 +59,10 @@ class Project extends Model
     public function scopeOrdered($query)
     {
         return $query->orderBy('order', 'asc');
+    }
+
+    public function scopeByCategory($query, $category)
+    {
+        return $query->where('category', $category);
     }
 }

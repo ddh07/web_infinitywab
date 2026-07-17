@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ServiceRequest;
 use App\Models\Service;
-use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
@@ -14,20 +14,9 @@ class ServiceController extends Controller
         return response()->json($services);
     }
 
-    public function store(Request $request)
+    public function store(ServiceRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:services',
-            'description' => 'required|string|max:500',
-            'content' => 'nullable|string',
-            'icon' => 'nullable|string|max:100',
-            'image' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
-            'order' => 'integer'
-        ]);
-
-        $service = Service::create($validated);
+        $service = Service::create($request->validated());
         return response()->json($service, 201);
     }
 
@@ -37,22 +26,10 @@ class ServiceController extends Controller
         return response()->json($service);
     }
 
-    public function update(Request $request, $id)
+    public function update(ServiceRequest $request, $id)
     {
         $service = Service::findOrFail($id);
-        
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:services,slug,' . $id,
-            'description' => 'required|string|max:500',
-            'content' => 'nullable|string',
-            'icon' => 'nullable|string|max:100',
-            'image' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
-            'order' => 'integer'
-        ]);
-
-        $service->update($validated);
+        $service->update($request->validated());
         return response()->json($service);
     }
 

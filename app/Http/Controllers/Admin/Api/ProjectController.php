@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ProjectRequest;
 use App\Models\Project;
-use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
@@ -37,27 +37,9 @@ class ProjectController extends Controller
         return response()->json($projects);
     }
 
-    public function store(Request $request)
+    public function store(ProjectRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:projects',
-            'description' => 'required|string|max:500',
-            'content' => 'nullable|string',
-            'client' => 'required|string|max:255',
-            'category' => 'nullable|string|max:255',
-            'status' => 'nullable|in:en_attente,en_cours,termine',
-            'project_date' => 'nullable|date',
-            'technologies' => 'nullable|array',
-            'image' => 'nullable|string|max:255',
-            'completion_date' => 'nullable|date',
-            'project_url' => 'nullable|url',
-            'is_featured' => 'boolean',
-            'is_active' => 'boolean',
-            'order' => 'integer'
-        ]);
-
-        $validated = $this->applyLegacyDefaults($validated, null);
+        $validated = $this->applyLegacyDefaults($request->validated(), null);
         $project = Project::create($validated);
         return response()->json($project, 201);
     }
@@ -68,29 +50,10 @@ class ProjectController extends Controller
         return response()->json($project);
     }
 
-    public function update(Request $request, $id)
+    public function update(ProjectRequest $request, $id)
     {
         $project = Project::findOrFail($id);
-        
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:projects,slug,' . $id,
-            'description' => 'required|string|max:500',
-            'content' => 'nullable|string',
-            'client' => 'required|string|max:255',
-            'category' => 'nullable|string|max:255',
-            'status' => 'nullable|in:en_attente,en_cours,termine',
-            'project_date' => 'nullable|date',
-            'technologies' => 'nullable|array',
-            'image' => 'nullable|string|max:255',
-            'completion_date' => 'nullable|date',
-            'project_url' => 'nullable|url',
-            'is_featured' => 'boolean',
-            'is_active' => 'boolean',
-            'order' => 'integer'
-        ]);
-
-        $validated = $this->applyLegacyDefaults($validated, $project);
+        $validated = $this->applyLegacyDefaults($request->validated(), $project);
         $project->update($validated);
         return response()->json($project);
     }

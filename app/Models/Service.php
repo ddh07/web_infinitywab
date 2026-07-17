@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\HtmlSanitizer;
+use App\Support\ImagePath;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
@@ -35,6 +36,11 @@ class Service extends Model
     public function setContentAttribute(?string $value): void
     {
         $this->attributes['content'] = HtmlSanitizer::sanitize($value);
+    }
+
+    public function getCoverUrlAttribute(): string
+    {
+        return ImagePath::resolve($this->image, 'images/services/defaukt_services_img.png');
     }
 
     public function scopeActive($query)

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\HtmlSanitizer;
+use App\Support\ImagePath;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -33,6 +34,11 @@ class Product extends Model
     public function setContentAttribute(?string $value): void
     {
         $this->attributes['content'] = HtmlSanitizer::sanitize($value);
+    }
+
+    public function getCoverUrlAttribute(): string
+    {
+        return ImagePath::resolve($this->images[0] ?? null, 'images/placeholder-product.png');
     }
 
     public function scopeActive($query)
