@@ -6,36 +6,45 @@
 @section('content')
 @php
     use Illuminate\Support\Str;
+
+    $heroImage = \App\Models\Setting::get('hero_image_home');
 @endphp
 
 <!-- Hero -->
-<section
-    class="relative overflow-hidden text-white py-24"
-    style="background-image: linear-gradient(to bottom right, rgba(2, 6, 23, 0.95), rgba(15, 23, 42, 0.85));"
->
-    <video
-        class="absolute inset-0 h-full w-full object-cover pointer-events-none opacity-90"
-        autoplay
-        muted
-        loop
-        playsinline
-        aria-hidden="true"
-    >
-        <source src="{{ asset('images/Infinywab_video.mp4') }}" type="video/mp4">
-        Votre navigateur ne supporte pas cette vidéo.
-    </video>
-    <div class="absolute inset-0 bg-slate-900/40 mix-blend-multiply pointer-events-none z-5"></div>
-    <div class="shape-blob shape-blob-1 z-10"></div>
-    <div class="shape-blob shape-blob-2 z-10"></div>
-    <div class="shape-blob shape-blob-3 z-10"></div>
-    <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top,_rgba(14,165,233,0.25),_transparent_40%)] z-20"></div>
-    <div class="relative z-30 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-12 lg:grid-cols-2 items-center">
-        <div class="space-y-6">
-            <p class="text-xs uppercase tracking-[0.5em] text-blue-300">Infinity WAB</p>
-            <h1 class="text-4xl md:text-5xl font-bold leading-tight">
+<section class="relative overflow-hidden bg-surface-canvas text-ink-primary pt-28 lg:pt-32 pb-40 lg:pb-48">
+    @if($heroImage)
+        {{-- Image personnalisée (admin > Paramètres > Personnalisation) : remplace la
+             vidéo par défaut plutôt que de se superposer à elle. --}}
+        <img src="{{ $heroImage }}" alt="" aria-hidden="true" class="absolute inset-0 h-full w-full scale-110 object-cover pointer-events-none opacity-50">
+    @else
+        <video
+            class="absolute inset-0 h-full w-full scale-110 object-cover pointer-events-none opacity-50"
+            data-parallax="0.08"
+            data-autoplay-video
+            autoplay
+            muted
+            loop
+            playsinline
+            aria-hidden="true"
+        >
+            <source src="{{ asset('images/Infinywab_video.mp4') }}" type="video/mp4">
+            Votre navigateur ne supporte pas cette vidéo.
+        </video>
+    @endif
+    <div class="absolute inset-0 bg-gradient-to-br from-[var(--hero-overlay-strong)] via-[var(--hero-overlay-soft)] to-[var(--hero-overlay-strong)] pointer-events-none"></div>
+
+    <!-- Texture schématique : grille de points, écho des circuits imprimés / réseaux -->
+    <div class="absolute inset-0 opacity-[0.12] pointer-events-none" style="background-image: radial-gradient(circle, #6bbfa0 1px, transparent 1px); background-size: 28px 28px;" data-parallax="0.03" aria-hidden="true"></div>
+
+    <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top,_rgba(107, 191, 160,0.16),_transparent_45%)]" data-parallax="0.05"></div>
+
+    <div class="relative z-30 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl space-y-7 animate-fade-in-up">
+            <p class="font-mono text-xs uppercase tracking-[0.5em] text-mint-400">Infinity WAB</p>
+            <h1 class="font-display text-4xl md:text-6xl font-semibold leading-[1.05] tracking-tight">
                 Innovation technologique <span class="text-gradient">à l’échelle du Burkina Faso</span>
             </h1>
-            <p class="text-lg text-white/70">
+            <p class="text-lg text-ink-secondary max-w-xl">
                 Nous bâtissons des services de maintenance, réseaux, développement web et produits digitaux pour rendre votre organisation résiliente,
                 sécurisée et ambitieuse.
             </p>
@@ -50,27 +59,11 @@
                     Discuter d’un projet
                 </x-ui.button>
             </div>
-        </div>
-        <div class="space-y-6">
-            <div class="rounded-3xl bg-slate-900/80 border border-white/10 p-8 shadow-2xl shadow-black/60 relative overflow-hidden">
-                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.2),_transparent_60%)]"></div>
-                <div class="relative z-10 space-y-4">
-                    <p class="text-xs uppercase tracking-[0.5em] text-white/60">Performance</p>
-                    <h2 class="text-3xl font-semibold text-white">#1 en innovation</h2>
-                    <p class="text-white/70 text-sm">
-                        Maintien de 24h/24 et déploiement de solutions hybrides pour les entreprises et institutions burkinabè.
-                    </p>
-                    <div class="text-xs uppercase tracking-[0.4em] text-blue-300">Dernier lancement</div>
-                    <p class="text-sm text-white/70">
-                        Accélérateur cloud & sécurité pour les administrations, en collaboration avec nos partenaires Cisco et AWS.
-                    </p>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="flex flex-wrap gap-8 pt-2">
                 @foreach($heroStats as $stat)
-                    <div class="rounded-2xl bg-slate-900/70 border border-white/10 p-4 text-center">
-                        <p class="text-2xl font-bold text-gradient">{{ $stat['value'] }}</p>
-                        <p class="text-xs uppercase tracking-[0.4em] text-white/60">{{ $stat['label'] }}</p>
+                    <div>
+                        <p class="font-display text-2xl font-bold text-gradient">{{ $stat['value'] }}</p>
+                        <p class="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-ink-muted">{{ $stat['label'] }}</p>
                     </div>
                 @endforeach
             </div>
@@ -78,92 +71,27 @@
     </div>
 </section>
 
-@if($carouselHighlights->isNotEmpty())
-    <section class="py-16 bg-slate-950">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <div class="space-y-2">
-                    <p class="text-xs uppercase tracking-[0.5em] text-blue-300">Focus</p>
-                    <h2 class="text-3xl font-semibold text-white">Nos signatures projet</h2>
-                    <p class="text-white/70 max-w-2xl">Des plateformes stratégiques et des infrastructures sensibles pensées pour les organisations burkinabè.</p>
-                </div>
-                <div class="flex gap-3">
-                    <button type="button" data-carousel-prev class="inline-flex items-center justify-center h-12 w-12 rounded-full border border-white/20 text-white hover:border-white/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
-                        <span class="sr-only">Précédent</span>
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                        </svg>
-                    </button>
-                    <button type="button" data-carousel-next class="inline-flex items-center justify-center h-12 w-12 rounded-full border border-white/20 text-white hover:border-white/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
-                        <span class="sr-only">Suivant</span>
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div class="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-900/60" data-carousel>
-                <div class="flex transition-transform duration-500 ease-out" data-carousel-track>
-                    @foreach($carouselHighlights as $highlight)
-                        <article class="flex-shrink-0 w-full box-border px-6 py-10 sm:px-10" data-carousel-slide aria-hidden="true">
-                            <div class="space-y-4">
-                                <p class="text-xs uppercase tracking-[0.4em] text-white/60">{{ $highlight->category ?? 'Projet' }}</p>
-                                <h3 class="text-3xl font-semibold leading-tight text-white">{{ $highlight->title }}</h3>
-                                <p class="text-sm text-white/70 leading-relaxed line-clamp-4">{{ Str::limit($highlight->description, 200) }}</p>
-                            </div>
-                            <div class="mt-6 flex items-center justify-between text-sm font-semibold text-blue-300">
-                                <span class="text-white/70">Livré par Infinity WAB</span>
-                                <a href="{{ route('projects.show', $highlight->slug) }}" class="flex items-center gap-2 hover:text-white" aria-label="Voir le projet {{ $highlight->title }}">
-                                    Découvrir
-                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                    </svg>
-                                </a>
-                            </div>
-                        </article>
-                    @endforeach
-                </div>
-            </div>
-            <div class="flex justify-center gap-2" data-carousel-indicators>
-                @foreach($carouselHighlights as $index => $highlight)
-                    <button type="button" data-carousel-indicator data-slide-index="{{ $index }}" class="h-2.5 w-2.5 rounded-full bg-white/20 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400" aria-label="Aller au projet {{ $highlight->title }}"></button>
-                @endforeach
-            </div>
-        </div>
-    </section>
-@endif
-
-<!-- Services -->
-<section class="py-20 bg-slate-950">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-            <div>
-                <p class="text-xs uppercase tracking-[0.5em] text-blue-400 mb-2">Services</p>
-                <h2 class="text-3xl font-semibold text-white">Des équipes dédiées par discipline</h2>
-                <p class="text-white/70 max-w-2xl">Maintenance, réseaux, développement ou innovation : chaque service est livré avec une gouvernance transparente.</p>
-            </div>
-            <a href="{{ route('services') }}" class="text-sm font-semibold text-blue-300 hover:text-white flex items-center gap-2">
-                Tous les services
+<!-- Cartes services en chevauchement, à l'intersection du hero et du reste de la page -->
+<section class="relative z-40 -mt-24 lg:-mt-28">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-end justify-between mb-6 px-1" data-reveal>
+            <p class="font-mono text-xs uppercase tracking-[0.4em] text-ink-secondary">Nos services</p>
+            <a href="{{ route('services') }}" class="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-ink-secondary hover:text-ink-primary">
+                Voir les 6 services
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
             </a>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-            @foreach($services as $service)
-                @php
-                    $serviceCover = $service->cover_url;
-                @endphp
-                <article class="rounded-3xl border border-white/5 bg-slate-900/60 p-6 shadow-2xl shadow-black/50 hover:border-white/20 transition">
-                    <div class="mb-4 h-36 w-full overflow-hidden rounded-2xl border border-white/10">
-                        <img src="{{ $serviceCover }}" alt="{{ $service->title }}" class="h-full w-full object-cover transition-transform duration-500 hover:scale-105">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @foreach($services->take(3) as $service)
+                <article class="rounded-3xl bg-surface-raised border border-(--border-default) p-8 shadow-2xl shadow-(--glow-accent) hover:-translate-y-1 transition" data-reveal style="--reveal-delay: {{ $loop->index * 100 }}ms">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-mint-500 to-azure-500 flex items-center justify-center mb-5">
+                        <x-ui.icon :name="$service->icon" class="w-7 h-7 text-white" />
                     </div>
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-xl font-semibold text-white">{{ $service->title }}</h3>
-                        <span class="text-xs uppercase tracking-[0.4em] text-blue-300">Service</span>
-                    </div>
-                    <p class="text-sm text-white/70 leading-relaxed mb-4">{{ Str::limit($service->description, 140) }}</p>
-                    <a href="{{ route('services.show', $service->slug) }}" class="inline-flex items-center gap-2 text-sm font-semibold text-blue-300 hover:text-white">
+                    <h3 class="font-display text-xl font-semibold text-ink-primary mb-2">{{ $service->title }}</h3>
+                    <p class="text-sm text-ink-secondary leading-relaxed mb-5">{{ Str::limit($service->description, 110) }}</p>
+                    <a href="{{ route('services.show', $service->slug) }}" class="inline-flex items-center gap-2 text-sm font-semibold text-mint-500 hover:text-ink-primary">
                         En savoir plus
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -175,45 +103,85 @@
     </div>
 </section>
 
-<!-- Projects highlight -->
-<section class="py-20 bg-slate-900">
+<!-- Nos 4 branches -->
+<section class="relative py-20 bg-surface-canvas">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        <div class="text-center space-y-3">
-            <p class="text-xs uppercase tracking-[0.5em] text-blue-400">Projets</p>
-            <h2 class="text-3xl font-semibold text-white">Impact concret</h2>
-            <p class="text-white/70 max-w-3xl mx-auto">Plateformes e-commerce, applications mobiles et infrastructures sécurisées livrées sur le terrain.</p>
+        <div class="text-center space-y-3" data-reveal>
+            <p class="font-mono text-xs uppercase tracking-[0.3em] text-mint-500">Notre organisation</p>
+            <h2 class="font-display text-3xl font-semibold text-ink-primary">4 branches, une seule ambition</h2>
+            <p class="text-ink-secondary max-w-2xl mx-auto">Infinity WAB chapeaute quatre entités spécialisées, chacune experte dans son domaine.</p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            @foreach($projects as $project)
-                <article class="rounded-3xl border border-white/5 bg-slate-950/40 p-6 shadow-2xl shadow-black/60 space-y-4">
-                    <div class="h-40 w-full overflow-hidden rounded-2xl border border-white/10">
-                        @php
-                            $projectCover = $project->cover_url;
-                        @endphp
-                        <img src="{{ $projectCover }}" alt="{{ $project->title }}" class="h-full w-full object-cover transition-transform duration-500 hover:scale-105">
+        <div class="relative">
+            <!-- Trait de connexion entre les 4 branches, écho du fil conducteur "une seule ambition" -->
+            <div class="hidden lg:block absolute top-7 left-[12.5%] right-[12.5%] h-px bg-(--border-strong)" aria-hidden="true"></div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 relative">
+                @php
+                    $branches = [
+                        ['icon' => 'wifi', 'name' => 'Infinity Network', 'tagline' => 'Connecter. Sécuriser. Innover.'],
+                        ['icon' => 'lock-closed', 'name' => 'Infinity SafeTech', 'tagline' => 'Cybersécurité et sécurité technique.'],
+                        ['icon' => 'terminal', 'name' => 'Infinity Soft_dev', 'tagline' => 'Sites web et applications sur mesure.'],
+                        ['icon' => 'puzzle', 'name' => 'Infinity Miriade', 'tagline' => 'Application modulaire en construction.'],
+                    ];
+                @endphp
+                @foreach($branches as $branch)
+                    <div class="text-center space-y-3" data-reveal style="--reveal-delay: {{ $loop->index * 80 }}ms">
+                        <div class="mx-auto w-14 h-14 rounded-2xl bg-surface-raised border border-(--border-default) flex items-center justify-center text-mint-500 relative z-10">
+                            <x-ui.icon :name="$branch['icon']" class="w-7 h-7" />
+                        </div>
+                        <h3 class="font-display text-base font-semibold text-ink-primary">{{ $branch['name'] }}</h3>
+                        <p class="text-sm text-ink-secondary">{{ $branch['tagline'] }}</p>
                     </div>
-                    <div class="text-xs uppercase tracking-[0.4em] text-white/60">{{ $project->category ?? 'Projet' }}</div>
-                    <h3 class="text-xl font-semibold text-white">{{ $project->title }}</h3>
-                    <p class="text-sm text-white/70 line-clamp-3">{{ Str::limit($project->description, 120) }}</p>
-                    <a href="{{ route('projects.show', $project->slug) }}" class="inline-flex items-center gap-2 text-sm font-semibold text-blue-300 hover:text-white">
-                        Voir le projet
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                        </svg>
-                    </a>
-                </article>
-            @endforeach
+                @endforeach
+            </div>
         </div>
     </div>
+    <x-ui.shape-divider shape="curve" fill="text-surface-raised" />
 </section>
 
+<!-- Réalisations -->
+@if($projects->isNotEmpty())
+    <section class="py-20 bg-surface-raised">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+            <div class="text-center space-y-3" data-reveal>
+                <p class="font-mono text-xs uppercase tracking-[0.5em] text-mint-400">Réalisations</p>
+                <h2 class="font-display text-3xl font-semibold text-ink-primary">Ce que nous avons livré</h2>
+                <p class="text-ink-secondary max-w-3xl mx-auto">Des plateformes conçues, développées et déployées par les équipes Infinity WAB.</p>
+            </div>
+            <div class="grid grid-cols-1 {{ $projects->count() > 1 ? 'md:grid-cols-2' : '' }} gap-6">
+                @foreach($projects as $project)
+                    @php
+                        $projectCover = $project->cover_url;
+                    @endphp
+                    <article class="group rounded-3xl border border-(--border-default) bg-surface-canvas/60 overflow-hidden shadow-2xl shadow-(--glow-accent) hover:-translate-y-1 transition" data-reveal style="--reveal-delay: {{ $loop->index * 100 }}ms">
+                        <div class="h-56 w-full overflow-hidden">
+                            <img src="{{ $projectCover }}" alt="{{ $project->title }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        </div>
+                        <div class="p-8 space-y-3">
+                            <div class="font-mono text-xs uppercase tracking-[0.4em] text-ink-muted">{{ $project->category ?? 'Projet' }}</div>
+                            <h3 class="font-display text-2xl font-semibold text-ink-primary">{{ $project->title }}</h3>
+                            <p class="text-sm text-ink-secondary leading-relaxed">{{ Str::limit($project->description, 160) }}</p>
+                            <a href="{{ route('projects.show', $project->slug) }}" class="inline-flex items-center gap-2 text-sm font-semibold text-mint-400 hover:text-ink-primary pt-2">
+                                Voir le projet
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        </div>
+    </section>
+@endif
+
+
 <!-- Products -->
-<section class="py-20 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
+<section class="py-20 bg-surface-canvas text-ink-primary">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-8 lg:grid-cols-3">
-        <div class="lg:col-span-1 space-y-4">
-            <h2 class="text-3xl font-semibold">Produits durables</h2>
-            <p class="text-white/70">Des configurations prêtes à déployer et un accompagnement matériel complet (licences, déploiement, support). </p>
-            <a href="{{ route('products') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-blue-200 hover:text-white">
+        <div class="lg:col-span-1 space-y-4" data-reveal>
+            <h2 class="font-display text-3xl font-semibold">Produits durables</h2>
+            <p class="text-ink-secondary">Des configurations prêtes à déployer et un accompagnement matériel complet (licences, déploiement, support). </p>
+            <a href="{{ route('products') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-mint-400 hover:text-ink-primary">
                 Voir tous les produits
             </a>
         </div>
@@ -222,18 +190,18 @@
                 @php
                     $thumb = $product->cover_url;
                 @endphp
-                <article class="rounded-3xl border border-white/10 bg-slate-900/60 p-6 shadow-2xl shadow-black/60 space-y-3">
-                    <div class="h-40 w-full overflow-hidden rounded-2xl border border-white/10">
+                <article class="rounded-3xl border border-(--border-default) bg-surface-raised/70 p-6 shadow-2xl shadow-(--glow-accent) space-y-3 hover:-translate-y-1 transition" data-reveal style="--reveal-delay: {{ $loop->index * 80 }}ms">
+                    <div class="h-40 w-full overflow-hidden rounded-2xl border border-(--border-default)">
                         <img src="{{ $thumb }}" alt="{{ $product->title }}" class="h-full w-full object-cover transition-transform duration-500 hover:scale-105">
                     </div>
                     <div class="flex items-center justify-between">
-                        <h3 class="text-xl font-semibold text-white">{{ $product->title }}</h3>
-                        <span class="text-xs text-white/60">{{ $product->category }}</span>
+                        <h3 class="font-display text-xl font-semibold text-ink-primary">{{ $product->title }}</h3>
+                        <span class="text-xs text-ink-muted">{{ $product->category }}</span>
                     </div>
-                    <p class="text-sm text-white/70 line-clamp-3">{{ Str::limit($product->description, 120) }}</p>
+                    <p class="text-sm text-ink-secondary line-clamp-3">{{ Str::limit($product->description, 120) }}</p>
                     <div class="flex items-center justify-between text-sm">
-                        <span class="text-white/80">{{ number_format($product->price ?? 0, 0, ',', ' ') }} FCFA</span>
-                        <a href="{{ route('products.show', $product->slug) }}" class="font-semibold text-blue-300 hover:text-white inline-flex items-center gap-1">
+                        <span class="text-ink-secondary">{{ number_format($product->price ?? 0, 0, ',', ' ') }} FCFA</span>
+                        <a href="{{ route('products.show', $product->slug) }}" class="font-semibold text-mint-400 hover:text-ink-primary inline-flex items-center gap-1">
                             Découvrir
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -248,26 +216,26 @@
 
 <!-- Partners -->
 @if($partners->isNotEmpty())
-    <section class="py-20 bg-slate-900">
+    <section class="py-20 bg-surface-raised">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-            <div class="text-center space-y-3">
-                <p class="text-xs uppercase tracking-[0.5em] text-blue-400">Partenaires</p>
-                <h2 class="text-3xl font-semibold text-white">Nous accompagnons des organisations de confiance</h2>
-                <p class="text-white/60 max-w-3xl mx-auto">Collaborations durables dans la cybersécurité, le cloud et l'innovation digitale.</p>
+            <div class="text-center space-y-3" data-reveal>
+                <p class="font-mono text-xs uppercase tracking-[0.5em] text-mint-400">Partenaires</p>
+                <h2 class="font-display text-3xl font-semibold text-ink-primary">Nous accompagnons des organisations de confiance</h2>
+                <p class="text-ink-muted max-w-3xl mx-auto">Collaborations durables dans la cybersécurité, le cloud et l'innovation digitale.</p>
             </div>
             <div class="partners-marquee-wrapper" role="region" aria-label="Logos des partenaires">
                 <div class="partners-marquee-track">
                     @foreach(range(1, 2) as $iteration)
                         @foreach($partners as $partner)
-                            <article class="partners-marquee-card snap-center min-w-[230px] rounded-3xl border border-white/10 bg-slate-950/50 p-6 flex flex-col items-center justify-center space-y-4 shadow-lg shadow-black/60 transition hover:border-white/20">
+                            <article class="partners-marquee-card snap-center min-w-[230px] rounded-3xl border border-(--border-default) bg-surface-canvas/60 p-6 flex flex-col items-center justify-center space-y-4 shadow-lg shadow-(--glow-accent) transition hover:border-mint-400/40">
                                 @if($partner->logo)
                                     <img src="{{ asset($partner->logo) }}" alt="{{ $partner->name }}" class="partners-marquee-logo h-16 w-full object-contain">
                                 @else
-                                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center text-white/60 font-semibold text-lg">
+                                    <div class="w-16 h-16 bg-black/5 dark:bg-white/10 rounded-full flex items-center justify-center text-ink-muted font-semibold text-lg">
                                         {{ strtoupper(substr($partner->name, 0, 2)) }}
                                     </div>
                                 @endif
-                                <p class="text-sm text-center text-white/80 font-semibold">{{ $partner->name }}</p>
+                                <p class="text-sm text-center text-ink-secondary font-semibold">{{ $partner->name }}</p>
                             </article>
                         @endforeach
                     @endforeach
@@ -277,14 +245,56 @@
     </section>
 @endif
 
+<!-- Avis clients -->
+@if($testimonials->isNotEmpty())
+    <section class="py-20 bg-surface-canvas">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+            <div class="text-center space-y-3" data-reveal>
+                <p class="font-mono text-xs uppercase tracking-[0.5em] text-mint-400">Avis clients</p>
+                <h2 class="font-display text-3xl font-semibold text-ink-primary">Ce que nos clients en disent</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach($testimonials as $testimonial)
+                    <article class="rounded-3xl border border-(--border-default) bg-surface-raised/70 p-6 shadow-2xl shadow-(--glow-accent) space-y-4" data-reveal style="--reveal-delay: {{ $loop->index * 100 }}ms">
+                        <div class="flex text-amber-400" aria-hidden="true">
+                            @for($i = 0; $i < 5; $i++)
+                                <svg class="w-4 h-4 {{ $i < $testimonial->rating ? '' : 'opacity-25' }}" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.367 2.447a1 1 0 00-.363 1.118l1.287 3.958c.3.921-.755 1.688-1.538 1.118l-3.367-2.448a1 1 0 00-1.176 0l-3.367 2.448c-.783.57-1.838-.197-1.538-1.118l1.287-3.958a1 1 0 00-.363-1.118L2.063 9.385c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.958z"/>
+                                </svg>
+                            @endfor
+                        </div>
+                        <p class="text-sm text-ink-secondary leading-relaxed">« {{ $testimonial->content }} »</p>
+                        <div class="flex items-center gap-3 pt-2">
+                            @if($testimonial->photo)
+                                <img src="{{ asset($testimonial->photo) }}" alt="{{ $testimonial->name }}" class="w-10 h-10 rounded-full object-cover">
+                            @else
+                                <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-mint-500 to-azure-500 text-slate-950 font-semibold text-sm">
+                                    {{ strtoupper(substr($testimonial->name, 0, 2)) }}
+                                </span>
+                            @endif
+                            <div>
+                                <p class="text-sm font-semibold text-ink-primary">{{ $testimonial->name }}</p>
+                                @if($testimonial->role)
+                                    <p class="text-xs text-ink-muted">{{ $testimonial->role }}</p>
+                                @endif
+                            </div>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        </div>
+    </section>
+@endif
+
 <!-- CTA -->
-<section class="py-20 bg-gradient-to-r from-blue-500/20 via-blue-600/40 to-purple-500/20 text-white">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-        <p class="text-xs uppercase tracking-[0.6em] text-blue-200">Prêt à innover ?</p>
-        <h2 class="text-3xl font-semibold">Construisons la prochaine génération de services numériques au Burkina Faso.</h2>
+<section class="relative py-20 bg-gradient-to-r from-mint-700 via-azure-700 to-azure-600 text-white">
+    <x-ui.shape-divider shape="angle" position="top" fill="text-mint-700" />
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6" data-reveal>
+        <p class="font-mono text-xs uppercase tracking-[0.6em] text-mint-300">Prêt à innover ?</p>
+        <h2 class="font-display text-3xl md:text-4xl font-semibold">Construisons la prochaine génération de services numériques au Burkina Faso.</h2>
         <p class="text-white/70">Des workshops à la livraison, Infinity WAB reste un partenaire stratégique concrètement présent au quotidien.</p>
         <div class="flex flex-wrap justify-center gap-4">
-            <a href="{{ route('contact') }}" class="inline-flex items-center gap-2 px-8 py-3 bg-white text-slate-900 font-semibold rounded-2xl shadow-xl shadow-blue-900/30">
+            <a href="{{ route('contact') }}" class="inline-flex items-center gap-2 px-8 py-3 bg-white text-slate-900 font-semibold rounded-2xl shadow-xl shadow-mint-600/30">
                 Parler à un expert
             </a>
             <a href="{{ route('projects') }}" class="inline-flex items-center gap-2 px-8 py-3 rounded-2xl border border-white/40 text-white font-semibold">

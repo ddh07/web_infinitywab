@@ -7,6 +7,7 @@ use App\Models\Partner;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\Service;
+use App\Models\Testimonial;
 use Illuminate\View\View;
 
 class LandingController extends Controller
@@ -18,9 +19,9 @@ class LandingController extends Controller
 
         $partners = Partner::active()->ordered()->get();
         $services = Service::active()->ordered()->take(4)->get();
-        $projects = Project::active()->ordered()->take(3)->get();
-        $carouselHighlights = Project::active()->ordered()->take(4)->get();
+        $projects = Project::active()->ordered()->take(4)->get();
         $featuredProducts = Product::active()->featured()->ordered()->take(3)->get();
+        $testimonials = Testimonial::active()->ordered()->get();
 
         $heroStats = [
             ['label' => 'Projets livrés', 'value' => $companyStats['projects_completed'] ?? '250+'],
@@ -33,8 +34,8 @@ class LandingController extends Controller
             'partners',
             'services',
             'projects',
-            'carouselHighlights',
             'featuredProducts',
+            'testimonials',
             'heroStats',
         ));
     }

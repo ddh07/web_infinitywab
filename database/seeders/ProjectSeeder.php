@@ -2,12 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Models\Project;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class ProjectSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
         $projects = [
@@ -83,12 +85,11 @@ class ProjectSeeder extends Seeder
             ],
         ];
 
+        // Vider la table avant de la remplir pour éviter les doublons lors de ré-exécutions
+        Project::truncate();
+
         foreach ($projects as $project) {
-            DB::table('projects')->insert([
-                ...$project,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            Project::create($project);
         }
     }
 }
