@@ -56,7 +56,7 @@ Un site web moderne et dynamique pour l'entreprise Infinity WAB, spécialisée d
 └── public/            # Assets publics
 ```
 
-## 🚀 Installation
+## 📦 Installation
 
 ### Prérequis
 - PHP 8.4+
@@ -125,9 +125,7 @@ php artisan migrate --force
 ./scripts/deploy-sans-docker.sh
 ```
 
-Voir [DEPLOY_SANS_DOCKER.md](DEPLOY_SANS_DOCKER.md) pour le guide complet (Nginx, PHP-FPM, MySQL, SSL).
-
-## � Pages du Site
+## 🗺️ Pages du Site
 
 ### Pages Publiques
 - **Accueil** (`/`) : Hero section et présentation
@@ -146,88 +144,62 @@ Voir [DEPLOY_SANS_DOCKER.md](DEPLOY_SANS_DOCKER.md) pour le guide complet (Nginx
 - **Messages** (`/admin/messages`) : Messages des visiteurs
 - **Statistiques** (`/admin/statistiques`) : Analytics
 
-## 🎯 Objectifs Atteints
+## 🎯 État du Projet
 
-### ✅ Fonctionnalités Implémentées
-- [x] **Design moderne** avec identité visuelle forte
-- [x] **Interface responsive** et mobile-first
-- [x] **Animations fluides** et effets visuels
-- [x] **Interface d'admin** complète et fonctionnelle
-- [x] **Base de données** structurée et optimisée
-- [x] **SEO optimisé** avec balises sémantiques
-- [x] **Code propre** et maintenable
+### ✅ Implémenté
+- **Design moderne** et interface responsive/mobile-first
+- **Interface d'admin** complète (services, projets, produits, contenu, messages, statistiques, utilisateurs)
+- **Authentification** (inscription, connexion, vérification email, reset mot de passe) avec politique de mot de passe renforcée (`app/Providers/AppServiceProvider.php`) et throttling anti-bruteforce
+- **Formulaire de contact** fonctionnel avec anti-spam (honeypot + délai minimal de soumission)
+- **En-têtes de sécurité** (CSP à base de nonces, HSTS, X-Frame-Options, etc. — `app/Http/Middleware/SecurityHeaders.php`)
+- **Tests automatisés PHPUnit** sur l'authentification et l'administration (`tests/Feature`)
+- **Base de données** avec index de performance sur les tables principales
 
-### 🔄 En cours
-- [ ] **Formulaire de contact** fonctionnel (backend)
-- [ ] **Système d'authentification** admin
-- [ ] **Gestion des médias** (upload images)
-- [ ] **Système de notifications**
+### 🔄 Connu et non résolu
+- Pas de pipeline CI/CD (aucun `.github/workflows`) : les tests/lint doivent être lancés manuellement avant de merger
+- Pas de suivi d'erreurs centralisé en production (Sentry ou équivalent)
+- Pas de tests JavaScript (Vitest est configuré mais aucun fichier de test JS n'existe encore)
+- Pas d'authentification à deux facteurs pour le compte admin
+- Pas de PHPStan/Larastan installé
 
 ### 📋 Améliorations Futures
-- [ ] **Blog/Actualités** pour le contenu dynamique
-- [ ] **Système de réservations** en ligne
-- [ ] **Intégration paiement** pour les services
-- [ ] **API mobile** pour application dédiée
-- [ ] **Multilingue** (français/anglais)
-- [ ] **Tests automatisés** (unitaires et fonctionnels)
+- Blog/Actualités pour le contenu dynamique
+- Système de réservations en ligne
+- Intégration paiement pour les services
+- API mobile pour application dédiée
+- Multilingue (français/anglais)
 
-## � Tests Automatisés
+## 🧪 Tests locaux
 
-Le projet inclut une suite complète de tests automatisés avec GitHub Actions :
-
-### 📊 Types de tests
-- **Tests Laravel** : Unitaires, fonctionnels et intégration avec PHPUnit
-- **Tests JavaScript** : Tests Vue.js avec Vitest
-- **Qualité code** : PHPStan, PHP CS Fixer, ESLint, Prettier
-- **Sécurité** : Trivy, Snyk, CodeQL, audit dépendances
-- **Coverage** : Rapport de couverture de code (70% minimum)
-
-### 🚀 Workflow CI/CD
-```bash
-# Déclenché automatiquement sur :
-- Push sur branches main/develop
-- Pull requests  
-- Schedule quotidien (scan sécurité)
-```
-
-### 🏆 Badges de qualité
-![Tests](https://github.com/username/infinity-wab-site/workflows/CI/CD%20Pipeline/badge.svg)
-![Security](https://github.com/username/infinity-wab-site/workflows/Security%20Scan/badge.svg)
-![Coverage](https://codecov.io/gh/username/infinity-wab-site/branch/main/graph/badge.svg)
-
-### 🛠️ Tests locaux
 ```bash
 # Installation
 composer install
 npm install
 
-# Tests complets
-npm run ci
+# Tests PHP (nécessite une base de données de test, voir phpunit.xml)
+php artisan test
+# ou
+vendor/bin/phpunit
 
-# Tests individuels
-vendor/bin/phpunit          # Tests PHP
-npm test                    # Tests JS
-npm run lint                # Qualité code
+# Qualité et tests JS (lint, type-check, audit npm — pas de tests JS pour l'instant)
+npm run ci
 ```
 
 ## 📚 Documentation
 
-- [Guide de déploiement sans Docker](DEPLOY_SANS_DOCKER.md)
 - [Documentation Laravel](https://laravel.com/docs)
-- [GitHub Actions](https://docs.github.com/en/actions)
 - [PHPUnit Testing](https://phpunit.de/documentation.html)
 - [Vitest Testing](https://vitest.dev/)
 
 ## 🤝 Support
 
 Pour toute question ou problème:
-- Email: support@infinity-wab.bf
-- Documentation: `/docs`
+- Email: infinity-wab@infinity-wab.com
 - Issues: GitHub Issues
 
 ## 📄 Licence
 
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+Code propriétaire — © Infinity WAB. Tous droits réservés. Aucune redistribution ou réutilisation sans autorisation.
 
 ---
 

@@ -25,4 +25,10 @@ cmds = [
 cmds = ["npm run build"]
 
 [start]
-cmd = "sh -c 'php artisan serve --host=0.0.0.0 --port=${PORT:-8000}'"
+# Exécuté à chaque démarrage/redéploiement du conteneur : migrations (idempotentes),
+# lien de stockage public (recréé si le volume storage/ est neuf), puis mise en
+# cache config/route/vue. APP_KEY ne doit JAMAIS être généré ici (il doit rester
+# fixe entre les déploiements, sinon sessions et données chiffrées deviennent
+# illisibles) — à définir une seule fois comme variable d'environnement sur la
+# plateforme, voir .env.example.
+cmd = "sh -c 'php artisan migrate --force && php artisan storage:link || true && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}'"
