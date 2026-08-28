@@ -17,6 +17,8 @@
 /public/build
 /public/hot
 /public/storage
+/public/legal/*
+!/public/legal/.gitkeep
 /public/branding/*
 !/public/branding/.gitkeep
 /storage/*.key
