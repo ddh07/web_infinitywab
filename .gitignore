@@ -5,6 +5,7 @@
 !.env.example
 .phpactor.json
 .phpunit.result.cache
+/.claude
 /.fleet
 /.idea
 /.nova
@@ -18,6 +19,11 @@
 /public/storage
 /storage/*.key
 /storage/pail
+# Fichier scratch généré par certains serveurs de langage PHP (Intelephense, etc.)
+# directement dans storage/framework — jamais volontaire, jamais à committer.
+/storage/framework/lsp-*.php
+# Clé de compte de service Google (GA4_CREDENTIALS_PATH) : jamais versionnée.
+/storage/app/google/*.json
 /vendor
 Homestead.json
 Homestead.yaml
