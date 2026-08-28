@@ -29,6 +29,7 @@ export function initContactCarousel() {
     }
 
     function startAutoPlay() {
+        if ((window.__forceReducedMotion === true || window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
         autoPlayInterval = setInterval(nextSlide, 6000);
     }
 

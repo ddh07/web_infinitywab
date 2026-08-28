@@ -1,41 +1,77 @@
 module.exports = {
+  darkMode: 'class',
   content: [
     "./resources/**/*.blade.php",
     "./resources/**/*.js",
     "./resources/**/*.vue",
   ],
+  // Ces polices importées depuis /font ne sont pas encore utilisées dans les vues :
+  // sans safelist, le scan de contenu de Tailwind ne générerait pas ces classes tant
+  // qu'aucun fichier ne les référence littéralement.
+  safelist: [
+    'font-technique',
+    'font-technique-hollow',
+    'font-technique-hollow-inverse',
+    'font-technique-inverse',
+    'font-natural',
+  ],
   theme: {
     extend: {
       fontFamily: {
         'sans': ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        'display': ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        'display': ['"Space Grotesk"', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        'mono': ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        // Polices auto-hébergées importées depuis /font (voir @font-face dans app.css).
+        'technique': ['"Technique"', '"Space Grotesk"', 'sans-serif'],
+        'technique-hollow': ['"Technique Hollow"', '"Space Grotesk"', 'sans-serif'],
+        'technique-hollow-inverse': ['"Technique Hollow Inverse"', '"Space Grotesk"', 'sans-serif'],
+        'technique-inverse': ['"Technique Inverse"', '"Space Grotesk"', 'sans-serif'],
+        'natural': ['"Natural Technologies"', 'cursive'],
       },
       colors: {
-        primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-          950: '#082f49',
+        // Tokens sémantiques de thème : la valeur change via les variables CSS
+        // définies dans app.css (:root = clair, .dark = sombre). Toujours
+        // préférer ces classes (bg-surface-*, text-ink-*) aux couleurs slate/white
+        // codées en dur pour que le composant s'adapte aux deux thèmes.
+        surface: {
+          canvas: 'var(--surface-canvas)',
+          raised: 'var(--surface-raised)',
+          overlay: 'var(--surface-overlay)',
+          sunken: 'var(--surface-sunken)',
         },
-        accent: {
-          50: '#fdf4ff',
-          100: '#fae8ff',
-          200: '#f5d0fe',
-          300: '#f0abfc',
-          400: '#e879f9',
-          500: '#d946ef',
-          600: '#c026d3',
-          700: '#a21caf',
-          800: '#86198f',
-          900: '#701a75',
-          950: '#4a044e',
+        ink: {
+          primary: 'var(--text-primary)',
+          secondary: 'var(--text-secondary)',
+          muted: 'var(--text-muted)',
+        },
+        // Identité de marque Infinity WAB : palette officielle (Adobe Color) —
+        // navy #012340, bleu acier #3B6D8C, cyan #5BC2D9, sauge #6BBFA0, gris #F2F2F2.
+        // Échelle complète (50-900) pour couvrir aussi les usages "admin" (badges,
+        // focus, fonds légers) sans retomber sur des couleurs Tailwind génériques
+        // (indigo, blue, purple...) hors de la marque.
+        mint: {
+          50: '#f0f9f5',
+          100: '#dcf0e6',
+          200: '#b8e2cd',
+          300: '#94d3b3',
+          400: '#82cba6',
+          500: '#6bbfa0', // exact palette
+          600: '#52a687',
+          700: '#3f8569',
+          800: '#2f634f',
+          900: '#234a3a',
+        },
+        azure: {
+          50: '#eaf8fb',
+          100: '#cdedf5',
+          200: '#a3dfec',
+          300: '#7dd2e2',
+          400: '#5bc2d9', // exact palette
+          500: '#4a9ab5',
+          600: '#3b6d8c', // exact palette
+          700: '#2c5268',
+          800: '#1f3c4d',
+          900: '#162a37',
         },
         dark: {
           50: '#fafafa',

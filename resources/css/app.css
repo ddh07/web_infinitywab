@@ -1,6 +1,186 @@
 @import "tailwindcss";
 @config "../../tailwind.config.js";
 
+/* Polices auto-hébergées (fichiers fournis dans /font à la racine du projet, copiés
+   dans public/fonts). Disponibles via les classes Tailwind font-technique /
+   font-technique-hollow / font-technique-inverse / font-natural (voir tailwind.config.js) ;
+   pas encore appliquées par défaut à un rôle typographique existant (titres/corps). */
+@font-face {
+    font-family: "Technique";
+    src: url("/fonts/TECHNIQUE-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Technique";
+    src: url("/fonts/TECHNIQUE.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Technique";
+    src: url("/fonts/TECHNIQUE-Italic.otf") format("opentype");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Technique";
+    src: url("/fonts/TECHNIQUE-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Technique";
+    src: url("/fonts/TECHNIQUE-Bold-Italic.otf") format("opentype");
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Technique Hollow";
+    src: url("/fonts/TECHNIQUE-Hollow.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Technique Hollow Inverse";
+    src: url("/fonts/TECHNIQUE-Hollow-Inverse.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Technique Inverse";
+    src: url("/fonts/TECHNIQUE-Inverse.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Natural Technologies";
+    src: url("/fonts/natural-technologies.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Thème clair / sombre — variables de tokens sémantiques.
+   .dark est posée sur <html> par le script anti-flash dans le <head> des layouts,
+   avant le premier paint, pour éviter un flash du mauvais thème. */
+:root {
+    color-scheme: light;
+    --surface-canvas: #f2f2f2; /* exact palette */
+    --surface-raised: #ffffff;
+    --surface-overlay: rgba(255, 255, 255, 0.78);
+    --surface-sunken: #e6e6e6;
+    --border-default: rgba(1, 35, 64, 0.10);
+    --border-strong: rgba(1, 35, 64, 0.18);
+    --text-primary: #012340; /* exact palette (navy) */
+    --text-secondary: #3b6d8c; /* exact palette (bleu acier) */
+    --text-muted: #7a8ea0;
+    --accent-from: #52a687;
+    --accent-to: #3b6d8c; /* exact palette */
+    --glow-accent: rgba(82, 166, 135, 0.18);
+    /* Voile posé sur la vidéo du hero d'accueil pour garder le texte lisible ;
+       clair en thème clair, assombri en thème sombre (voir .dark ci-dessous). */
+    --hero-overlay-strong: rgba(242, 242, 242, 0.93);
+    --hero-overlay-soft: rgba(242, 242, 242, 0.80);
+}
+
+.dark {
+    color-scheme: dark;
+    --surface-canvas: #012340; /* exact palette (navy) */
+    --surface-raised: #0b3459;
+    --surface-overlay: rgba(11, 52, 89, 0.75);
+    --surface-sunken: #011a2e;
+    --border-default: rgba(91, 194, 217, 0.14);
+    --border-strong: rgba(91, 194, 217, 0.24);
+    --text-primary: #f2f2f2; /* exact palette */
+    --text-secondary: #a9d3e0;
+    --text-muted: #6f93a8;
+    --accent-from: #6bbfa0; /* exact palette (sauge) */
+    --accent-to: #5bc2d9; /* exact palette (cyan) */
+    --glow-accent: rgba(91, 194, 217, 0.30);
+    --hero-overlay-strong: rgba(11, 22, 38, 0.95);
+    --hero-overlay-soft: rgba(11, 22, 38, 0.85);
+}
+
+/* Dégradé de marque, utilisé pour les mots-clés dans les titres (remplace l'ancien
+   .text-gradient qui référençait une classe jamais définie). */
+.text-gradient {
+    background-image: linear-gradient(90deg, var(--accent-from), var(--accent-to));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Styles du HTML brut généré par CommonMark pour les documents légaux importés en
+   Markdown (aucune classe Tailwind sur les éléments produits par le convertisseur). */
+.prose-legal h1, .prose-legal h2, .prose-legal h3 {
+    font-family: "Space Grotesk", Inter, ui-sans-serif, system-ui, sans-serif;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+}
+.prose-legal h1 { font-size: 1.75rem; }
+.prose-legal h2 { font-size: 1.375rem; }
+.prose-legal h3 { font-size: 1.125rem; }
+.prose-legal p { margin-bottom: 1rem; }
+.prose-legal ul, .prose-legal ol { margin: 0 0 1rem 1.5rem; }
+.prose-legal ul { list-style: disc; }
+.prose-legal ol { list-style: decimal; }
+.prose-legal li { margin-bottom: 0.375rem; }
+.prose-legal a { color: var(--accent-from); font-weight: 600; text-decoration: none; }
+.prose-legal a:hover { color: var(--text-primary); }
+.prose-legal strong { color: var(--text-primary); font-weight: 600; }
+.prose-legal blockquote {
+    border-left: 3px solid var(--border-strong);
+    padding-left: 1rem;
+    color: var(--text-muted);
+    margin: 1rem 0;
+}
+.prose-legal code {
+    background: var(--surface-sunken);
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.375rem;
+    font-size: 0.875em;
+}
+.prose-legal hr { border-color: var(--border-default); margin: 2rem 0; }
+.prose-legal table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+.prose-legal th, .prose-legal td { border: 1px solid var(--border-default); padding: 0.5rem 0.75rem; text-align: left; }
+
+body {
+    background-color: var(--surface-canvas);
+    color: var(--text-primary);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Lien d'évitement (accessibilité clavier) : hors écran tant qu'il n'a pas le focus,
+   ramené dans le viewport au Tab pour permettre de sauter la navigation répétitive. */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 100;
+    background: var(--surface-raised);
+    color: var(--text-primary);
+    padding: 0.75rem 1.25rem;
+    border-radius: 0 0 0.5rem 0.5rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: top 0.15s ease;
+}
+.skip-link:focus {
+    top: 0;
+}
+
 /* Animations personnalisées pour Tailwind */
 @keyframes fadeIn {
     from {
@@ -482,7 +662,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgba(79, 209, 179, 0.12), transparent);
     animation: carousel-shine 8s ease-in-out infinite;
 }
 
@@ -521,7 +701,7 @@
     position: absolute;
     inset: 0;
     border-radius: 1.5rem;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), transparent, rgba(139, 92, 246, 0.05));
+    background: linear-gradient(135deg, rgba(79, 209, 179, 0.05), transparent, rgba(56, 182, 224, 0.05));
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -532,8 +712,8 @@
 
 .hero-carousel-slide:hover {
     transform: translateY(-8px) scale(1.02);
-    border-color: rgba(59, 130, 246, 0.3);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 60px rgba(59, 130, 246, 0.1);
+    border-color: rgba(79, 209, 179, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 60px rgba(79, 209, 179, 0.1);
 }
 
 .hero-contact-carousel {
@@ -547,7 +727,7 @@
     position: absolute;
     inset: 0;
     border-radius: 1.5rem;
-    background: radial-gradient(circle at top, rgba(59, 130, 246, 0.15), transparent 60%);
+    background: radial-gradient(circle at top, rgba(79, 209, 179, 0.15), transparent 60%);
     pointer-events: none;
     mix-blend-mode: screen;
     opacity: 0.6;
@@ -581,7 +761,7 @@
 /* Animated Particles */
 .particle {
     position: absolute;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.8), rgba(139, 92, 246, 0.6));
+    background: radial-gradient(circle, rgba(79, 209, 179, 0.8), rgba(56, 182, 224, 0.6));
     border-radius: 50%;
     pointer-events: none;
     mix-blend-mode: screen;
@@ -718,19 +898,25 @@
     z-index: 10;
 }
 
+/* La zone cliquable dépasse largement le point visuel (padding + background-clip)
+   pour approcher la cible tactile minimale de 44px sans agrandir le point à l'écran. */
 .carousel-dot {
     width: 0.5rem;
     height: 0.5rem;
+    padding: 1rem;
+    box-sizing: content-box;
+    background-clip: content-box;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.3);
+    transition: background-color 0.3s ease;
     cursor: pointer;
 }
 
 .carousel-dot.active {
     width: 2rem;
     border-radius: 0.25rem;
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    background-color: #6bbfa0;
+    background-image: linear-gradient(90deg, #6bbfa0, #5bc2d9);
 }
 
 .carousel-dot:hover {
@@ -820,9 +1006,20 @@
     }
 }
 
+/* Motif signature : le tracé infini (∞) qui parcourt le hero de l'accueil, en écho
+   au nom et au logo Infinity WAB. Le trait se dessine en boucle. */
+@keyframes infinity-draw {
+    0% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -1400; }
+}
+
+.infinity-path {
+    animation: infinity-draw 18s linear infinite;
+}
+
 /* Text animations */
 .text-gradient-animated {
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #f59e0b, #10b981, #3b82f6);
+    background: linear-gradient(90deg, #6bbfa0, #5bc2d9, #6bbfa0);
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
@@ -975,16 +1172,30 @@
     width: 100%;
 }
 
-/* Scroll animations */
-.scroll-reveal {
+/* Scroll reveal — activé par resources/js/pages/scroll-reveal.js (IntersectionObserver).
+   La classe js-reveal-enabled n'est posée sur <html> que si le JS a bien chargé, pour
+   que le contenu reste visible par défaut (progressive enhancement, pas de FOUC caché). */
+.js-reveal-enabled [data-reveal] {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0ms);
 }
 
-.scroll-reveal.active {
+.js-reveal-enabled [data-reveal].is-visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Respect du confort utilisateur : quasiment toutes les animations/transitions du site
+   (float, glow, marquee, reveal...) sont neutralisées si le système demande "reduced motion". */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 /* Parallax effects */
@@ -998,4 +1209,134 @@
 
 .parallax-fast {
     transition: transform 0.3s ease;
+}
+
+/* Messagerie admin façon Gmail (resources/views/admin/messages.blade.php) :
+   l'état "non lu" et le basculement des icônes d'action sont pilotés par une
+   seule classe (.is-unread) que le JS ajoute/retire, plutôt que de manipuler
+   une liste de classes utilitaires à chaque endroit qui change l'état. */
+.message-row.is-unread {
+    background-color: rgba(59, 109, 140, 0.06);
+}
+.dark .message-row.is-unread {
+    background-color: rgba(91, 194, 217, 0.06);
+}
+.message-row .row-name,
+.message-row .row-subject {
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+.message-row.is-unread .row-name,
+.message-row.is-unread .row-subject {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+.message-row .unread-bar {
+    display: none;
+}
+.message-row.is-unread .unread-bar {
+    display: block;
+}
+.message-row .icon-action-markread {
+    display: none;
+}
+.message-row.is-unread .icon-action-markread {
+    display: block;
+}
+.message-row .icon-action-markunread {
+    display: block;
+}
+.message-row.is-unread .icon-action-markunread {
+    display: none;
+}
+.message-row .row-date {
+    display: block;
+}
+.message-row:hover .row-date {
+    display: none;
+}
+.message-row .row-actions {
+    display: none;
+}
+.message-row:hover .row-actions,
+.message-row:focus-within .row-actions {
+    display: flex;
+}
+
+/* Bascule liste / lecture sur mobile : au-delà de lg les deux volets restent
+   visibles côte à côte quel que soit data-view (posé par le JS au clic sur
+   un message / au retour à la liste). */
+@media (max-width: 1023px) {
+    #mailApp[data-view="list"] #messageDetailPane {
+        display: none;
+    }
+    #mailApp[data-view="detail"] #messageListPane {
+        display: none;
+    }
+}
+
+/* Éditeur de contenu riche (Quill, voir resources/js/admin/rich-editor.js) :
+   le thème "snow" est repeint avec les tokens du design system admin pour suivre
+   le mode clair/sombre au lieu de son blanc/noir codé en dur par défaut. */
+.ql-toolbar.ql-snow {
+    border-color: var(--border-default);
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    background: var(--surface-sunken);
+}
+.ql-container.ql-snow {
+    border-color: var(--border-default);
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    background: var(--surface-sunken);
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.9375rem;
+}
+.ql-editor {
+    color: var(--text-primary);
+    min-height: 10rem;
+    /* Hauteur bornée avec défilement interne : sans ça, un contenu long pousse
+       indéfiniment la hauteur de la modale et casse l'alignement avec les champs
+       voisins (ex: "Description" à côté, bien plus courte). */
+    max-height: 18rem;
+    overflow-y: auto;
+}
+.ql-editor.ql-blank::before {
+    color: var(--text-muted);
+    font-style: normal;
+}
+.ql-snow .ql-stroke {
+    stroke: var(--text-secondary);
+}
+.ql-snow .ql-fill {
+    fill: var(--text-secondary);
+}
+.ql-snow .ql-picker {
+    color: var(--text-secondary);
+}
+.ql-snow .ql-picker-options {
+    background: var(--surface-raised);
+    border-color: var(--border-default) !important;
+}
+.ql-snow.ql-toolbar button:hover,
+.ql-snow .ql-toolbar button:hover,
+.ql-snow.ql-toolbar button.ql-active,
+.ql-snow .ql-toolbar button.ql-active {
+    color: var(--accent-from);
+}
+.ql-snow.ql-toolbar button:hover .ql-stroke,
+.ql-snow .ql-toolbar button:hover .ql-stroke,
+.ql-snow.ql-toolbar button.ql-active .ql-stroke,
+.ql-snow .ql-toolbar button.ql-active .ql-stroke {
+    stroke: var(--accent-from);
+}
+.ql-snow.ql-toolbar button:hover .ql-fill,
+.ql-snow .ql-toolbar button:hover .ql-fill,
+.ql-snow.ql-toolbar button.ql-active .ql-fill,
+.ql-snow .ql-toolbar button.ql-active .ql-fill {
+    fill: var(--accent-from);
+}
+.ql-editor img {
+    max-width: 100%;
+    border-radius: 0.5rem;
 }

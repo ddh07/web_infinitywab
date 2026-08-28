@@ -62,8 +62,7 @@ class ExampleTest extends TestCase
 
         $response = $this->post('/contact', $contactData);
 
-        $response->assertRedirect(route('contact'))
-                 ->assertSessionHas('success');
+        $response->assertRedirect(route('contact.thanks'));
 
         $this->assertDatabaseHas('messages', [
             'name' => 'John Doe',
