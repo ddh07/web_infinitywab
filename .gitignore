@@ -17,6 +17,8 @@
 /public/build
 /public/hot
 /public/storage
+/public/branding/*
+!/public/branding/.gitkeep
 /storage/*.key
 /storage/pail
 # Fichier scratch généré par certains serveurs de langage PHP (Intelephense, etc.)

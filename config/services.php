@@ -35,4 +35,23 @@ return [
         ],
     ],
 
+    'gtm' => [
+        'container_id' => env('GTM_CONTAINER_ID'),
+    ],
+
+    'turnstile' => [
+        // Laisser vide désactive complètement l'intégration (widget non affiché,
+        // vérification serveur ignorée) — même convention que gtm.container_id.
+        'site_key' => env('TURNSTILE_SITE_KEY'),
+        'secret_key' => env('TURNSTILE_SECRET_KEY'),
+    ],
+
+    'ga4' => [
+        'property_id' => env('GA4_PROPERTY_ID'),
+        'credentials_path' => env('GA4_CREDENTIALS_PATH'),
+        // Rempli à l'exécution depuis la table `settings` si configuré via l'admin
+        // (voir AppServiceProvider::applyDatabaseSettings) ; prioritaire sur credentials_path.
+        'credentials_json' => null,
+    ],
+
 ];
