@@ -2,42 +2,24 @@
 
 namespace App\Support;
 
+use Mews\Purifier\Facades\Purifier;
+
 class HtmlSanitizer
 {
     /**
-     * Balises autorisées pour le contenu riche saisi par les admins et affiché
-     * sans échappement ({!! !!}) sur les pages publiques (service/projet/produit).
-     */
-    private const ALLOWED_TAGS = '<p><br><strong><b><em><i><u><ul><ol><li><h2><h3><h4><blockquote><a>';
-
-    /**
-     * Retire les balises non autorisées, les gestionnaires d'événements
-     * (onclick, onerror, ...) et les URLs javascript:/data: sur les liens.
-     */
+     * Nettoie une chaîne HTML pour la protéger contre les attaques XSS.
+     * Utilise la bibliothèque HTML Purifier pour une sécurité robuste, en se basant
+     * sur la configuration définie dans `config/purifier.php`.
+     *
+     * @param string|null $html Le code HTML à nettoyer.
+     * @return string|null Le HTML nettoyé.
+     */ 
     public static function sanitize(?string $html): ?string
     {
-        if ($html === null || $html === '') {
-            return $html;
+        if ($html === null) {
+            return null;
         }
-
-        $clean = strip_tags($html, self::ALLOWED_TAGS);
-
-        // Supprime tout attribut on*="..." ou on*='...'
-        $clean = preg_replace('/\s+on[a-z]+\s*=\s*("[^"]*"|\'[^\']*\')/i', '', $clean) ?? $clean;
-
-        // Neutralise les href/src pointant vers javascript: ou data:
-        $clean = preg_replace_callback(
-            '/\s(href|src)\s*=\s*("([^"]*)"|\'([^\']*)\')/i',
-            function (array $m) {
-                $value = $m[3] !== '' ? $m[3] : $m[4];
-                if (preg_match('/^\s*(javascript|data):/i', $value)) {
-                    return '';
-                }
-                return $m[0];
-            },
-            $clean
-        ) ?? $clean;
-
-        return $clean;
+        // Utilise la configuration 'default' de config/purifier.php
+        return Purifier::clean($html);
     }
 }
