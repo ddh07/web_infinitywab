@@ -23,9 +23,18 @@ class VerificationController extends Controller
     /**
      * Where to redirect users after verification.
      *
-     * @var string
+     * @return string
      */
-    protected $redirectTo = '/home';
+    protected function redirectTo(): string
+    {
+        $user = auth()->user();
+
+        if ($user && $user->is_admin) {
+            return '/admin';
+        }
+
+        return '/home';
+    }
 
     /**
      * Create a new controller instance.

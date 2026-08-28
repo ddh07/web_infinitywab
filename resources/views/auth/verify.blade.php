@@ -4,7 +4,7 @@
 
 @section('content')
 <section class="min-h-screen relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-surface-canvas via-surface-raised to-surface-canvas"></div>
     <div class="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.25),_transparent_45%)]"></div>
     <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_bottom,_rgba(139,92,246,0.20),_transparent_55%)]"></div>
 
@@ -16,8 +16,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                     </svg>
                 </div>
-                <h1 class="text-3xl font-semibold">Vérifiez votre email</h1>
-                <p class="text-white/60">Un lien de confirmation a été envoyé à l’adresse associée à votre compte.</p>
+                <h1 class="text-3xl font-semibold text-ink-primary">Vérifiez votre email</h1>
+                <p class="text-ink-muted">Un lien de confirmation a été envoyé à l’adresse associée à votre compte.</p>
             </div>
 
             @if (session('status'))
@@ -32,20 +32,20 @@
                 </div>
             @endif
 
-            <div class="rounded-[28px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl shadow-black/60 backdrop-blur animate-fade-in-up space-y-5">
-                <div class="space-y-3 text-sm text-white/75 leading-relaxed">
+            <div class="rounded-[28px] border border-(--border-default) bg-surface-raised/70 p-6 shadow-2xl shadow-(--glow-accent) backdrop-blur animate-fade-in-up space-y-5">
+                <div class="space-y-3 text-sm text-ink-secondary leading-relaxed">
                     <p>
                         Avant de continuer, ouvrez l’email que nous vous avons envoyé et cliquez sur le bouton
-                        <span class="font-semibold text-white">Confirmer mon email</span>.
+                        <span class="font-semibold text-ink-primary">Confirmer mon email</span>.
                     </p>
-                    <p class="text-white/55 text-xs">
+                    <p class="text-ink-muted text-xs">
                         Si le message n’apparaît pas tout de suite, attendez quelques minutes ou vérifiez le dossier spam.
                     </p>
                 </div>
 
-                <div class="rounded-2xl border border-white/10 bg-slate-950/40 p-4 text-xs text-white/50">
-                    <p class="font-semibold text-white/70 mb-1">Compte connecté</p>
-                    <p class="text-white/90 truncate">{{ auth()->user()->email }}</p>
+                <div class="rounded-2xl border border-(--border-default) bg-surface-sunken p-4 text-xs text-ink-muted">
+                    <p class="font-semibold text-ink-secondary mb-1">Compte connecté</p>
+                    <p class="text-ink-primary truncate">{{ auth()->user()->email }}</p>
                 </div>
 
                 <form method="POST" action="{{ route('verification.resend') }}" class="space-y-4">
@@ -58,7 +58,7 @@
                     </x-ui.button>
                 </form>
 
-                <p class="text-center text-xs text-white/45">
+                <p class="text-center text-xs text-ink-muted">
                     Vous n’êtes pas à l’origine de cette inscription ? Contactez l’administrateur du site.
                 </p>
             </div>
@@ -66,12 +66,12 @@
             <div class="text-center flex flex-col sm:flex-row items-center justify-center gap-4">
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf
-                    <button type="submit" class="text-sm font-semibold text-white/70 hover:text-white">
+                    <button type="submit" class="text-sm font-semibold text-ink-secondary hover:text-ink-primary">
                         Se déconnecter
                     </button>
                 </form>
-                <span class="hidden sm:inline text-white/20">|</span>
-                <a href="{{ route('home') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-white/70 hover:text-white">
+                <span class="hidden sm:inline text-ink-muted/40">|</span>
+                <a href="{{ route('home') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-ink-secondary hover:text-ink-primary">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>

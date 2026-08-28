@@ -5,7 +5,7 @@
 
 @section('content')
 <section class="min-h-screen relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-surface-canvas via-surface-raised to-surface-canvas"></div>
     <div class="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.25),_transparent_45%)]"></div>
     <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_bottom,_rgba(139,92,246,0.20),_transparent_55%)]"></div>
 
@@ -17,8 +17,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                     </svg>
                 </div>
-                <h1 class="text-3xl font-semibold">Connexion</h1>
-                <p class="text-white/60">Accédez au panneau d’administration Infinity WAB.</p>
+                <h1 class="text-3xl font-semibold text-ink-primary">Connexion</h1>
+                <p class="text-ink-muted">Accédez au panneau d’administration Infinity WAB.</p>
             </div>
 
             @if (session('error'))
@@ -32,12 +32,12 @@
                 </div>
             @endif
 
-            <div class="rounded-[28px] border border-white/10 bg-slate-900/60 p-6 shadow-2xl shadow-black/60 backdrop-blur animate-fade-in-up">
+            <div class="rounded-[28px] border border-(--border-default) bg-surface-raised/70 p-6 shadow-2xl shadow-(--glow-accent) backdrop-blur animate-fade-in-up">
                 <form method="POST" action="{{ route('login') }}" class="space-y-5">
                     @csrf
 
                     <div class="space-y-2">
-                        <label for="email" class="text-xs font-semibold uppercase tracking-[0.35em] text-white/60">Email</label>
+                        <label for="email" class="text-xs font-semibold uppercase tracking-[0.35em] text-ink-muted">Email</label>
                         <input
                             id="email"
                             type="email"
@@ -47,15 +47,16 @@
                             autocomplete="email"
                             autofocus
                             placeholder=""
-                            class="w-full rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3 text-sm text-white placeholder-white/40 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 @error('email') border-rose-400 @enderror"
+                            @error('email') aria-invalid="true" aria-describedby="email-error" @enderror
+                            class="w-full rounded-2xl border border-(--border-default) bg-surface-sunken px-4 py-3 text-sm text-ink-primary placeholder-ink-muted focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 @error('email') border-rose-400 @enderror"
                         >
                         @error('email')
-                            <p class="text-sm text-rose-300">{{ $message }}</p>
+                            <p id="email-error" class="text-sm text-rose-300">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="space-y-2">
-                        <label for="password" class="text-xs font-semibold uppercase tracking-[0.35em] text-white/60">Mot de passe</label>
+                        <label for="password" class="text-xs font-semibold uppercase tracking-[0.35em] text-ink-muted">Mot de passe</label>
                         <div class="relative">
                             <input
                                 id="password"
@@ -64,25 +65,26 @@
                                 required
                                 autocomplete="current-password"
                                 placeholder="••••••••"
-                                class="w-full rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3 pr-24 text-sm text-white placeholder-white/40 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 @error('password') border-rose-400 @enderror"
+                                @error('password') aria-invalid="true" aria-describedby="password-error" @enderror
+                                class="w-full rounded-2xl border border-(--border-default) bg-surface-sunken px-4 py-3 pr-24 text-sm text-ink-primary placeholder-ink-muted focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 @error('password') border-rose-400 @enderror"
                             >
                             <button
                                 type="button"
                                 data-password-toggle="#password"
                                 aria-pressed="false"
-                                class="absolute right-2 top-1/2 -translate-y-1/2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white/70 hover:bg-white/10"
+                                class="absolute right-1.5 top-1/2 h-11 -translate-y-1/2 rounded-xl border border-(--border-default) bg-black/5 dark:bg-white/5 px-3 text-xs font-semibold text-ink-secondary hover:bg-black/10 dark:hover:bg-white/10"
                             >
                                 <span data-password-toggle-label>Afficher</span>
                             </button>
                         </div>
                         @error('password')
-                            <p class="text-sm text-rose-300">{{ $message }}</p>
+                            <p id="password-error" class="text-sm text-rose-300">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="flex items-center justify-between">
-                        <label class="inline-flex items-center gap-2 text-sm text-white/70">
-                            <input id="remember" name="remember" type="checkbox" class="h-4 w-4 rounded border-white/20 bg-slate-950/40 text-blue-500 focus:ring-blue-400">
+                        <label class="inline-flex items-center gap-2 text-sm text-ink-secondary">
+                            <input id="remember" name="remember" type="checkbox" class="h-4 w-4 rounded border-(--border-default) bg-surface-sunken text-blue-500 focus:ring-blue-400">
                             Se souvenir de moi
                         </label>
 
@@ -101,14 +103,14 @@
 
                 @if(config('app.debug'))
                 <div class="mt-6 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-200">
-                    <p class="font-semibold mb-1">Accès test (dev uniquement)</p>
-                    <p class="text-white/70">Admin — admin@infinity-wab.bf / password</p>
+                    <p class="font-semibold mb-1">Environnement de développement</p>
+                    <p class="text-ink-secondary">Identifiants admin générés par <code>php artisan db:seed</code> (voir la sortie de la commande).</p>
                 </div>
                 @endif
             </div>
 
             <div class="text-center">
-                <a href="{{ route('home') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-white/70 hover:text-white">
+                <a href="{{ route('home') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-ink-secondary hover:text-ink-primary">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
