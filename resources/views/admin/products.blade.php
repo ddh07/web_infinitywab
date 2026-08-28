@@ -6,47 +6,47 @@
 @section('content')
 <div class="space-y-6">
     <section class="grid gap-4 grid-cols-2 lg:grid-cols-4">
-        <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
-            <p class="text-xs font-medium text-slate-500 uppercase">Total</p>
-            <p class="mt-2 text-2xl font-semibold text-slate-800" id="totalProducts">0</p>
+        <div class="bg-surface-raised rounded-lg border border-(--border-default) p-4 shadow-sm">
+            <p class="text-xs font-medium text-ink-muted uppercase">Total</p>
+            <p class="mt-2 text-2xl font-semibold text-ink-primary" id="totalProducts">0</p>
         </div>
-        <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
-            <p class="text-xs font-medium text-slate-500 uppercase">Actifs</p>
-            <p class="mt-2 text-2xl font-semibold text-emerald-600" id="activeProducts">0</p>
+        <div class="bg-surface-raised rounded-lg border border-(--border-default) p-4 shadow-sm">
+            <p class="text-xs font-medium text-ink-muted uppercase">Actifs</p>
+            <p class="mt-2 text-2xl font-semibold text-emerald-600 dark:text-emerald-400" id="activeProducts">0</p>
         </div>
-        <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
-            <p class="text-xs font-medium text-slate-500 uppercase">Mis en avant</p>
-            <p class="mt-2 text-2xl font-semibold text-amber-600" id="featuredProducts">0</p>
+        <div class="bg-surface-raised rounded-lg border border-(--border-default) p-4 shadow-sm">
+            <p class="text-xs font-medium text-ink-muted uppercase">Mis en avant</p>
+            <p class="mt-2 text-2xl font-semibold text-amber-600 dark:text-amber-400" id="featuredProducts">0</p>
         </div>
-        <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
-            <p class="text-xs font-medium text-slate-500 uppercase">Catégories</p>
-            <p class="mt-2 text-2xl font-semibold text-slate-800" id="categoryProducts">0</p>
+        <div class="bg-surface-raised rounded-lg border border-(--border-default) p-4 shadow-sm">
+            <p class="text-xs font-medium text-ink-muted uppercase">Catégories</p>
+            <p class="mt-2 text-2xl font-semibold text-ink-primary" id="categoryProducts">0</p>
         </div>
     </section>
 
-    <section class="bg-white rounded-lg border border-slate-200 p-6 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
+    <section class="bg-surface-raised rounded-lg border border-(--border-default) p-6 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-(--border-default) pb-4">
             <div>
-                <h2 class="text-lg font-semibold text-slate-800">Produits</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Catalogue, prix, catégories</p>
+                <h2 class="text-lg font-semibold text-ink-primary">Produits</h2>
+                <p class="text-xs text-ink-muted mt-0.5">Catalogue, prix, catégories</p>
             </div>
-            <button onclick="openProductModal()" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+            <button type="button" id="btnAddProduct" class="rounded-lg bg-azure-600 px-4 py-2 text-sm font-medium text-white hover:bg-azure-700">
                 Ajouter un produit
             </button>
         </div>
 
         <div class="mt-4 flex flex-wrap items-center gap-3">
             <div class="relative flex-1 min-w-[200px]">
-                <input id="productSearch" type="search" placeholder="Rechercher…" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 focus:border-indigo-500">
+                <input id="productSearch" type="search" placeholder="Rechercher…" class="w-full rounded-lg border border-(--border-default) bg-surface-sunken px-3 py-2 text-sm text-ink-primary placeholder-ink-muted focus:border-azure-500">
             </div>
-            <select id="productCategory" class="min-w-[140px] rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 focus:border-indigo-500">
+            <select id="productCategory" class="min-w-[140px] rounded-lg border border-(--border-default) bg-surface-sunken px-3 py-2 text-sm text-ink-primary focus:border-azure-500">
                 <option value="">Toutes catégories</option>
                 <option value="software">Logiciels</option>
                 <option value="hardware">Matériels</option>
                 <option value="service">Services</option>
                 <option value="other">Autre</option>
             </select>
-            <select id="productStatus" class="min-w-[140px] rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 focus:border-indigo-500">
+            <select id="productStatus" class="min-w-[140px] rounded-lg border border-(--border-default) bg-surface-sunken px-3 py-2 text-sm text-ink-primary focus:border-azure-500">
                 <option value="">Tous les statuts</option>
                 <option value="active">Actifs</option>
                 <option value="inactive">Inactifs</option>
@@ -54,10 +54,10 @@
             </select>
         </div>
 
-        <div class="mt-4 overflow-hidden rounded-lg border border-slate-200">
+        <div class="mt-4 overflow-hidden rounded-lg border border-(--border-default)">
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-slate-600">
-                    <thead class="bg-slate-50 text-xs uppercase text-slate-500">
+                <table class="w-full text-left text-sm text-ink-secondary">
+                    <thead class="bg-surface-sunken text-xs uppercase text-ink-muted">
                         <tr>
                             <th class="px-5 py-3">Produit</th>
                             <th class="px-5 py-3">Catégorie</th>
@@ -68,13 +68,13 @@
                     </thead>
                     <tbody id="productsTableBody">
                         <tr>
-                            <td colspan="5" class="px-5 py-12 text-center text-sm text-slate-400">Chargement des produits...</td>
+                            <td colspan="5" class="px-5 py-12 text-center text-sm text-ink-muted">Chargement des produits...</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div id="productsEmptyState" class="hidden px-5 py-10 text-center text-sm text-slate-500">
-                <p class="text-lg font-semibold text-slate-900">Aucun produit à afficher</p>
+            <div id="productsEmptyState" class="hidden px-5 py-10 text-center text-sm text-ink-muted">
+                <p class="text-lg font-semibold text-ink-primary">Aucun produit à afficher</p>
                 <p>Créez votre première fiche produit ou ajustez les filtres.</p>
             </div>
         </div>
@@ -83,18 +83,18 @@
 
 <div
     id="productModal"
-    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4 py-10"
+    class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 px-4 py-10"
     role="dialog"
     aria-modal="true"
     aria-labelledby="productModalTitle"
 >
-    <div class="w-full max-w-4xl rounded-lg bg-white p-6 shadow-xl max-h-[90vh] overflow-y-auto">
+    <div class="w-full max-w-4xl rounded-lg bg-surface-raised p-6 shadow-xl max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-xs uppercase tracking-[0.4em] text-slate-400">Produit</p>
-                <h3 class="text-2xl font-semibold text-slate-900" id="productModalTitle">Ajouter un produit</h3>
+                <p class="text-xs uppercase tracking-[0.4em] text-ink-muted">Produit</p>
+                <h3 class="text-2xl font-semibold text-ink-primary" id="productModalTitle">Ajouter un produit</h3>
             </div>
-            <button onclick="closeProductModal()" class="rounded-lg bg-slate-100 p-2 text-slate-600 hover:bg-slate-200">
+            <button type="button" class="js-close-product-modal rounded-lg bg-surface-sunken p-2 text-ink-secondary hover:bg-black/5 dark:hover:bg-white/10">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
@@ -104,18 +104,18 @@
             <input type="hidden" id="productId">
             <div class="grid gap-4 md:grid-cols-2">
                 <div>
-                    <label class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Titre *</label>
-                    <input type="text" id="productTitle" required class="mt-2 w-full rounded-2xl border border-slate-300 px-4 py-2 text-sm text-slate-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-200">
+                    <label class="text-xs font-semibold uppercase tracking-[0.3em] text-ink-muted">Titre *</label>
+                    <input type="text" id="productTitle" required class="mt-2 w-full rounded-lg border border-(--border-default) bg-surface-sunken px-4 py-2 text-sm text-ink-primary focus:border-azure-500">
                 </div>
                 <div>
-                    <label class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Slug *</label>
-                    <input type="text" id="productSlug" required class="mt-2 w-full rounded-2xl border border-slate-300 px-4 py-2 text-sm text-slate-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-200">
+                    <label class="text-xs font-semibold uppercase tracking-[0.3em] text-ink-muted">Slug *</label>
+                    <input type="text" id="productSlug" required class="mt-2 w-full rounded-lg border border-(--border-default) bg-surface-sunken px-4 py-2 text-sm text-ink-primary focus:border-azure-500">
                 </div>
             </div>
             <div class="grid gap-4 md:grid-cols-3">
                 <div>
-                    <label class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Catégorie *</label>
-                    <select id="productCategoryInput" required class="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-200">
+                    <label class="text-xs font-semibold uppercase tracking-[0.3em] text-ink-muted">Catégorie *</label>
+                    <select id="productCategoryInput" required class="mt-2 w-full rounded-lg border border-(--border-default) bg-surface-sunken px-4 py-2 text-sm text-ink-primary focus:border-azure-500">
                         <option value="">Sélectionner</option>
                         <option value="software">Logiciels</option>
                         <option value="hardware">Matériels</option>
@@ -124,45 +124,52 @@
                     </select>
                 </div>
                 <div>
-                    <label class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Prix (FCFA)</label>
-                    <input type="number" id="productPrice" step="0.01" class="mt-2 w-full rounded-2xl border border-slate-300 px-4 py-2 text-sm text-slate-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-200">
+                    <label class="text-xs font-semibold uppercase tracking-[0.3em] text-ink-muted">Prix (FCFA)</label>
+                    <input type="number" id="productPrice" step="0.01" class="mt-2 w-full rounded-lg border border-(--border-default) bg-surface-sunken px-4 py-2 text-sm text-ink-primary focus:border-azure-500">
                 </div>
                 <div>
-                    <label class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Ordre</label>
-                    <input type="number" id="productOrder" class="mt-2 w-full rounded-2xl border border-slate-300 px-4 py-2 text-sm text-slate-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-200" value="0">
+                    <label class="text-xs font-semibold uppercase tracking-[0.3em] text-ink-muted">Ordre</label>
+                    <input type="number" id="productOrder" class="mt-2 w-full rounded-lg border border-(--border-default) bg-surface-sunken px-4 py-2 text-sm text-ink-primary focus:border-azure-500" value="0">
                 </div>
             </div>
             <div>
-                <label class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Description *</label>
-                <textarea id="productDescription" rows="3" required class="mt-2 w-full rounded-2xl border border-slate-300 px-4 py-2 text-sm text-slate-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"></textarea>
+                <label class="text-xs font-semibold uppercase tracking-[0.3em] text-ink-muted">Description *</label>
+                <textarea id="productDescription" rows="3" required class="mt-2 w-full rounded-lg border border-(--border-default) bg-surface-sunken px-4 py-2 text-sm text-ink-primary focus:border-azure-500"></textarea>
             </div>
             <div>
-                <label class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Contenu</label>
-                <textarea id="productContent" rows="4" class="mt-2 w-full rounded-2xl border border-slate-300 px-4 py-2 text-sm text-slate-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"></textarea>
+                <label class="text-xs font-semibold uppercase tracking-[0.3em] text-ink-muted">Contenu</label>
+                <textarea id="productContent" rows="4" class="mt-2 w-full rounded-lg border border-(--border-default) bg-surface-sunken px-4 py-2 text-sm text-ink-primary focus:border-azure-500"></textarea>
             </div>
             <div>
-                <label class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Images (séparées par des sauts de ligne)</label>
-                <textarea id="productImages" rows="3" class="mt-2 w-full rounded-2xl border border-slate-300 px-4 py-2 text-sm text-slate-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-200" placeholder="images/cover.jpg\nimages/feature-1.jpg"></textarea>
+                <label class="text-xs font-semibold uppercase tracking-[0.3em] text-ink-muted">Images</label>
+                <div class="mt-2 flex items-start gap-3">
+                    <div id="productImagesPreview" class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-(--border-default) bg-surface-sunken"></div>
+                    <textarea id="productImages" rows="3" class="w-full rounded-lg border border-(--border-default) bg-surface-sunken px-4 py-2 text-sm text-ink-primary focus:border-azure-500" placeholder="images/cover.jpg&#10;images/feature-1.jpg"></textarea>
+                    <button type="button" id="productImagesPick" class="flex-shrink-0 rounded-lg border border-(--border-default) px-3 py-2 text-xs font-medium text-ink-secondary hover:bg-surface-sunken">
+                        Choisir
+                    </button>
+                </div>
+                <p class="mt-1 text-[11px] text-ink-muted">La première image est utilisée comme couverture. Choisir plusieurs fichiers dans la bibliothèque les ajoute tous à la galerie.</p>
             </div>
             <div>
-                <label class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Spécifications (clé: valeur)</label>
-                <textarea id="productSpecifications" rows="4" class="mt-2 w-full rounded-2xl border border-slate-300 px-4 py-2 text-sm text-slate-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-200" placeholder="Processeur: Intel i7\nMémoire: 16GB RAM"></textarea>
+                <label class="text-xs font-semibold uppercase tracking-[0.3em] text-ink-muted">Spécifications (clé: valeur)</label>
+                <textarea id="productSpecifications" rows="4" class="mt-2 w-full rounded-lg border border-(--border-default) bg-surface-sunken px-4 py-2 text-sm text-ink-primary focus:border-azure-500" placeholder="Processeur: Intel i7\nMémoire: 16GB RAM"></textarea>
             </div>
             <div class="flex flex-wrap gap-6">
-                <label class="flex items-center gap-2 text-sm text-slate-700">
-                    <input type="checkbox" id="productIsFeatured" class="h-4 w-4 rounded border-slate-300 text-amber-500 focus:ring-amber-500">
+                <label class="flex items-center gap-2 text-sm text-ink-secondary">
+                    <input type="checkbox" id="productIsFeatured" class="h-4 w-4 rounded border-(--border-default) text-amber-500 focus:ring-amber-500">
                     Mis en avant
                 </label>
-                <label class="flex items-center gap-2 text-sm text-slate-700">
-                    <input type="checkbox" id="productIsActive" checked class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500">
+                <label class="flex items-center gap-2 text-sm text-ink-secondary">
+                    <input type="checkbox" id="productIsActive" checked class="h-4 w-4 rounded border-(--border-default) text-azure-600 focus:ring-azure-500">
                     Produit actif
                 </label>
             </div>
-            <div class="flex justify-center gap-3 pt-4 border-t border-slate-200 sticky bottom-0 bg-white">
-                <button type="button" onclick="closeProductModal()" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50">
+            <div class="flex justify-center gap-3 pt-4 border-t border-(--border-default) sticky bottom-0 bg-surface-raised">
+                <button type="button" class="js-close-product-modal rounded-lg border border-(--border-default) px-4 py-2 text-sm font-medium text-ink-secondary hover:bg-surface-sunken">
                     Annuler
                 </button>
-                <button type="submit" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+                <button type="submit" class="rounded-lg bg-azure-600 px-4 py-2 text-sm font-medium text-white hover:bg-azure-700">
                     Enregistrer
                 </button>
             </div>
@@ -172,11 +179,19 @@
 @endsection
 
 @push('scripts')
-<script>
+<script nonce="{{ $cspNonce }}">
 document.addEventListener('DOMContentLoaded', () => {
     const productOrderInput = document.getElementById('productOrder');
+    const productsTableBody = document.getElementById('productsTableBody');
     const productFeaturedInput = document.getElementById('productIsFeatured');
     const productActiveInput = document.getElementById('productIsActive');
+    const productImagesField = window.bindMediaField({
+        input: document.getElementById('productImages'),
+        preview: document.getElementById('productImagesPreview'),
+        button: document.getElementById('productImagesPick'),
+        multiple: true,
+    });
+    window.initRichEditor('productContent');
 
     function formatPrice(value) {
         if (value == null) return '—';
@@ -188,30 +203,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const cleanCategory = product.category ? product.category.charAt(0).toUpperCase() + product.category.slice(1) : '—';
         const title = escapeHtml(product.title);
         return `
-            <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+            <tr class="border-b border-(--border-default) hover:bg-surface-sunken transition-colors">
                 <td class="px-5 py-4">
                     <div class="flex items-center gap-3">
-                        ${coverImage ? `<img src="${escapeHtml(coverImage)}" alt="${title}" class="h-12 w-12 rounded-2xl object-cover">` : `<span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-lg font-semibold text-slate-600">${title.charAt(0) || 'P'}</span>`}
+                        ${coverImage ? `<img src="${escapeHtml(coverImage)}" alt="${title}" class="h-12 w-12 rounded-2xl object-cover">` : `<span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-sunken text-lg font-semibold text-ink-secondary">${title.charAt(0) || 'P'}</span>`}
                         <div>
-                            <div class="text-sm font-semibold text-slate-900">${title}</div>
-                            <div class="text-xs text-slate-500">${escapeHtml(product.slug)}</div>
-                            <p class="text-xs text-slate-400">${escapeHtml(product.description ?? '—')}</p>
+                            <div class="text-sm font-semibold text-ink-primary">${title}</div>
+                            <div class="text-xs text-ink-muted">${escapeHtml(product.slug)}</div>
+                            <p class="text-xs text-ink-muted">${escapeHtml(product.description ?? '—')}</p>
                         </div>
                     </div>
                 </td>
-                <td class="px-5 py-4 text-sm text-slate-700">${escapeHtml(cleanCategory)}</td>
-                <td class="px-5 py-4 text-sm font-semibold text-slate-800">${formatPrice(product.price)}</td>
+                <td class="px-5 py-4 text-sm text-ink-secondary">${escapeHtml(cleanCategory)}</td>
+                <td class="px-5 py-4 text-sm font-semibold text-ink-primary">${formatPrice(product.price)}</td>
                 <td class="px-5 py-4">
                     <div class="flex flex-wrap items-center gap-2">
-                        ${product.is_featured ? '<span class="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-[11px] font-semibold text-amber-700">Mis en avant</span>' : ''}
-                        <span class="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold ${product.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
+                        ${product.is_featured ? '<span class="inline-flex items-center rounded-full bg-amber-100 dark:bg-amber-500/10 px-3 py-1 text-[11px] font-semibold text-amber-700 dark:text-amber-400">Mis en avant</span>' : ''}
+                        <span class="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold ${product.is_active ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400' : 'bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400'}">
                             ${product.is_active ? 'Actif' : 'Inactif'}
                         </span>
                     </div>
                 </td>
-                <td class="px-5 py-4 text-sm font-semibold text-slate-700">
-                    <button onclick="openProductModal(${product.id})" class="mr-3 text-purple-600 hover:text-purple-900">Modifier</button>
-                    <button onclick="deleteProduct(${product.id})" class="text-rose-600 hover:text-rose-900">Supprimer</button>
+                <td class="px-5 py-4 text-sm font-semibold text-ink-secondary">
+                    <button type="button" data-action="edit" data-id="${product.id}" class="mr-3 text-purple-600 hover:text-purple-900 dark:text-purple-400 dark:hover:text-purple-300">Modifier</button>
+                    <button type="button" data-action="delete" data-id="${product.id}" class="text-rose-600 hover:text-rose-900 dark:text-rose-400 dark:hover:text-rose-300">Supprimer</button>
                 </td>
             </tr>
         `;
@@ -263,8 +278,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('productPrice').value = product.price ?? '';
             productOrderInput.value = product.order ?? 0;
             document.getElementById('productDescription').value = product.description ?? '';
-            document.getElementById('productContent').value = product.content ?? '';
+            window.setRichEditorValue('productContent', product.content ?? '');
             document.getElementById('productImages').value = Array.isArray(product.images) ? product.images.join('\n') : product.images ?? '';
+            productImagesField.renderPreview();
             const specsInput = document.getElementById('productSpecifications');
             if (product.specifications && typeof product.specifications === 'object') {
                 specsInput.value = Object.entries(product.specifications).map(([key, value]) => `${key}: ${value}`).join('\n');
@@ -277,6 +293,8 @@ document.addEventListener('DOMContentLoaded', () => {
         resetExtras() {
             productActiveInput.checked = true;
             productOrderInput.value = '0';
+            productImagesField.renderPreview();
+            window.setRichEditorValue('productContent', '');
         },
         buildPayload() {
             const imagesRaw = document.getElementById('productImages').value;
@@ -313,9 +331,17 @@ document.addEventListener('DOMContentLoaded', () => {
         },
     });
 
-    window.openProductModal = resource.openModal;
-    window.closeProductModal = resource.closeModal;
-    window.deleteProduct = resource.deleteItem;
+    document.getElementById('btnAddProduct')?.addEventListener('click', () => resource.openModal());
+    document.querySelectorAll('.js-close-product-modal').forEach((btn) => {
+        btn.addEventListener('click', () => resource.closeModal());
+    });
+    productsTableBody.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+        const id = Number(btn.dataset.id);
+        if (btn.dataset.action === 'edit') resource.openModal(id);
+        else if (btn.dataset.action === 'delete') resource.deleteItem(id);
+    });
 });
 </script>
 @endpush

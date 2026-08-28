@@ -5,27 +5,27 @@
 
 @section('content')
 <div class="space-y-6">
-    <section class="bg-white rounded-lg border border-slate-200 p-6 shadow-sm">
-        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
+    <section class="bg-surface-raised rounded-lg border border-(--border-default) p-6 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-(--border-default) pb-4">
             <div>
-                <h2 class="text-lg font-semibold text-slate-800">Utilisateurs</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Comptes admin / staff</p>
+                <h2 class="text-lg font-semibold text-ink-primary">Utilisateurs</h2>
+                <p class="text-xs text-ink-muted mt-0.5">Comptes admin / staff</p>
             </div>
-            <button type="button" onclick="openUserModal()" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+            <button type="button" id="btnNewUser" class="rounded-lg bg-azure-600 px-4 py-2 text-sm font-medium text-white hover:bg-azure-700">
                 Nouvel utilisateur
             </button>
         </div>
 
         <div class="mt-4 flex flex-wrap items-center gap-3">
             <div class="relative flex-1 min-w-[200px]">
-                <input id="userSearch" type="search" placeholder="Rechercher…" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 focus:border-indigo-500">
+                <input id="userSearch" type="search" placeholder="Rechercher…" class="w-full rounded-lg border border-(--border-default) bg-surface-sunken px-3 py-2 text-sm text-ink-primary placeholder-ink-muted focus:border-azure-500">
             </div>
         </div>
 
-        <div class="mt-4 overflow-hidden rounded-lg border border-slate-200">
+        <div class="mt-4 overflow-hidden rounded-lg border border-(--border-default)">
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-slate-600">
-                    <thead class="bg-slate-50 text-xs uppercase text-slate-500">
+                <table class="w-full text-left text-sm text-ink-secondary">
+                    <thead class="bg-surface-sunken text-xs uppercase text-ink-muted">
                         <tr>
                             <th class="px-5 py-3">Utilisateur</th>
                             <th class="px-5 py-3">Email</th>
@@ -37,13 +37,13 @@
                     </thead>
                     <tbody id="usersTableBody">
                         <tr>
-                            <td colspan="6" class="px-5 py-12 text-center text-sm text-slate-400">Chargement des utilisateurs...</td>
+                            <td colspan="6" class="px-5 py-12 text-center text-sm text-ink-muted">Chargement des utilisateurs...</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div id="usersEmptyState" class="hidden px-5 py-10 text-center text-sm text-slate-500">
-                <p class="text-lg font-semibold text-slate-900">Aucun utilisateur à afficher</p>
+            <div id="usersEmptyState" class="hidden px-5 py-10 text-center text-sm text-ink-muted">
+                <p class="text-lg font-semibold text-ink-primary">Aucun utilisateur à afficher</p>
                 <p>Créez un nouvel utilisateur ou ajustez votre recherche.</p>
             </div>
         </div>
@@ -52,17 +52,17 @@
 
 <div
     id="userModal"
-    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4 py-10"
+    class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 px-4 py-10"
     role="dialog"
     aria-modal="true"
     aria-labelledby="userModalTitle"
 >
-    <div class="w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl max-h-[90vh] overflow-y-auto">
+    <div class="w-full max-w-2xl rounded-lg bg-surface-raised p-6 shadow-xl max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between">
             <div>
-                <h3 class="text-lg font-semibold text-slate-800" id="userModalTitle">Ajouter un utilisateur</h3>
+                <h3 class="text-lg font-semibold text-ink-primary" id="userModalTitle">Ajouter un utilisateur</h3>
             </div>
-            <button type="button" onclick="closeUserModal()" class="rounded-lg bg-slate-100 p-2 text-slate-600 hover:bg-slate-200">
+            <button type="button" class="js-close-user-modal rounded-lg bg-surface-sunken p-2 text-ink-secondary hover:bg-black/5 dark:hover:bg-white/10">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
@@ -74,38 +74,38 @@
 
             <div class="grid gap-4 md:grid-cols-2">
                 <div>
-                    <label class="block text-xs font-medium text-slate-600">Nom *</label>
-                    <input type="text" id="userName" required class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 focus:border-indigo-500">
+                    <label class="block text-xs font-medium text-ink-secondary">Nom *</label>
+                    <input type="text" id="userName" required class="mt-1 w-full rounded-lg border border-(--border-default) bg-surface-sunken px-3 py-2 text-sm text-ink-primary focus:border-azure-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-slate-600">Email *</label>
-                    <input type="email" id="userEmail" required class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 focus:border-indigo-500">
+                    <label class="block text-xs font-medium text-ink-secondary">Email *</label>
+                    <input type="email" id="userEmail" required class="mt-1 w-full rounded-lg border border-(--border-default) bg-surface-sunken px-3 py-2 text-sm text-ink-primary focus:border-azure-500">
                 </div>
             </div>
 
             <div class="flex flex-wrap items-center gap-6">
-                <label class="flex items-center gap-2 text-sm text-slate-700">
-                    <input type="checkbox" id="userIsAdmin" class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                <label class="flex items-center gap-2 text-sm text-ink-secondary">
+                    <input type="checkbox" id="userIsAdmin" class="h-4 w-4 rounded border-(--border-default) text-azure-600 focus:ring-azure-500">
                     Administrateur
                 </label>
             </div>
 
             <div class="grid gap-4 md:grid-cols-2">
                 <div>
-                    <label class="block text-xs font-medium text-slate-600">Mot de passe</label>
-                    <input type="password" id="userPassword" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 focus:border-indigo-500" autocomplete="new-password">
+                    <label class="block text-xs font-medium text-ink-secondary">Mot de passe</label>
+                    <input type="password" id="userPassword" class="mt-1 w-full rounded-lg border border-(--border-default) bg-surface-sunken px-3 py-2 text-sm text-ink-primary focus:border-azure-500" autocomplete="new-password">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-slate-600">Confirmation</label>
-                    <input type="password" id="userPasswordConfirmation" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 focus:border-indigo-500" autocomplete="new-password">
+                    <label class="block text-xs font-medium text-ink-secondary">Confirmation</label>
+                    <input type="password" id="userPasswordConfirmation" class="mt-1 w-full rounded-lg border border-(--border-default) bg-surface-sunken px-3 py-2 text-sm text-ink-primary focus:border-azure-500" autocomplete="new-password">
                 </div>
             </div>
 
-            <div class="flex justify-center gap-3 pt-4 border-t border-slate-200 sticky bottom-0 bg-white">
-                <button type="button" onclick="closeUserModal()" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50">
+            <div class="flex justify-center gap-3 pt-4 border-t border-(--border-default) sticky bottom-0 bg-surface-raised">
+                <button type="button" class="js-close-user-modal rounded-lg border border-(--border-default) px-4 py-2 text-sm font-medium text-ink-secondary hover:bg-surface-sunken">
                     Annuler
                 </button>
-                <button type="submit" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+                <button type="submit" class="rounded-lg bg-azure-600 px-4 py-2 text-sm font-medium text-white hover:bg-azure-700">
                     Enregistrer
                 </button>
             </div>
@@ -115,7 +115,7 @@
 @endsection
 
 @push('scripts')
-<script>
+<script nonce="{{ $cspNonce }}">
 document.addEventListener('DOMContentLoaded', () => {
     const userSearch = document.getElementById('userSearch');
     const usersTableBody = document.getElementById('usersTableBody');
@@ -133,10 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let usersData = [];
     let currentUserId = null;
-
-    function lockBodyScroll(lock) {
-        document.body.style.overflow = lock ? 'hidden' : '';
-    }
 
     function formatDate(value) {
         if (!value) return '—';
@@ -162,24 +158,24 @@ document.addEventListener('DOMContentLoaded', () => {
         usersEmptyState.classList.add('hidden');
 
         const rows = filtered.map((user) => `
-            <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                <td class="px-5 py-4 font-semibold text-slate-900">${user.name ?? '—'}</td>
-                <td class="px-5 py-4 text-slate-700">${user.email ?? '—'}</td>
+            <tr class="border-b border-(--border-default) hover:bg-surface-sunken transition-colors">
+                <td class="px-5 py-4 font-semibold text-ink-primary">${user.name ?? '—'}</td>
+                <td class="px-5 py-4 text-ink-secondary">${user.email ?? '—'}</td>
                 <td class="px-5 py-4">
-                    <span class="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold ${user.is_admin ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-200 text-slate-700'}">
+                    <span class="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold ${user.is_admin ? 'bg-azure-100 text-azure-700 dark:bg-azure-500/10 dark:text-azure-400' : 'bg-surface-sunken text-ink-secondary'}">
                         ${user.is_admin ? 'Admin' : 'Staff'}
                     </span>
                 </td>
                 <td class="px-5 py-4">
-                    <span class="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold ${user.email_verified_at ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
+                    <span class="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold ${user.email_verified_at ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400'}">
                         ${user.email_verified_at ? 'Verifie' : 'Non verifie'}
                     </span>
                 </td>
-                <td class="px-5 py-4 text-slate-600">${formatDate(user.created_at)}</td>
-                <td class="px-5 py-4 text-sm font-semibold text-slate-700">
-                    <button type="button" onclick="openUserModal(${user.id})" class="mr-3 text-indigo-600 hover:text-indigo-900">Modifier</button>
-                    ${!user.email_verified_at ? `<button type="button" onclick="resendVerificationEmail(${user.id})" class="mr-3 text-amber-600 hover:text-amber-900">Renvoyer verification</button>` : ''}
-                    <button type="button" onclick="deleteUser(${user.id})" class="text-rose-600 hover:text-rose-900">Supprimer</button>
+                <td class="px-5 py-4 text-ink-secondary">${formatDate(user.created_at)}</td>
+                <td class="px-5 py-4 text-sm font-semibold text-ink-secondary">
+                    <button type="button" data-action="edit-user" data-id="${user.id}" class="mr-3 text-azure-600 hover:text-azure-900 dark:text-azure-400 dark:hover:text-azure-300">Modifier</button>
+                    ${!user.email_verified_at ? `<button type="button" data-action="resend-verification" data-id="${user.id}" class="mr-3 text-amber-600 hover:text-amber-900 dark:text-amber-400 dark:hover:text-amber-300">Renvoyer verification</button>` : ''}
+                    <button type="button" data-action="delete-user" data-id="${user.id}" class="text-rose-600 hover:text-rose-900 dark:text-rose-400 dark:hover:text-rose-300">Supprimer</button>
                 </td>
             </tr>
         `).join('');
@@ -197,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(() => {
                 usersTableBody.innerHTML = '';
                 usersEmptyState.classList.remove('hidden');
-                usersEmptyState.innerHTML = '<p class="text-lg font-semibold text-slate-900">Erreur de chargement</p>';
+                usersEmptyState.innerHTML = '<p class="text-lg font-semibold text-ink-primary">Erreur de chargement</p>';
             });
     }
 
@@ -210,8 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openUserModal(userId = null) {
         currentUserId = userId;
-        userModal.classList.remove('hidden');
-        lockBodyScroll(true);
+        window.openAdminModal(userModal);
         userModalTitle.textContent = userId ? 'Modifier un utilisateur' : 'Ajouter un utilisateur';
 
         if (!userId) {
@@ -242,15 +237,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function closeUserModal() {
-        userModal.classList.add('hidden');
+        window.closeAdminModal(userModal);
         userForm.reset();
         userIdInput.value = '';
         currentUserId = null;
-        lockBodyScroll(false);
     }
 
-    function deleteUser(userId) {
-        if (!confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) return;
+    async function deleteUser(userId) {
+        const confirmed = await window.confirmDialog('Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.', {
+            title: 'Supprimer l’utilisateur',
+            confirmLabel: 'Supprimer',
+        });
+        if (!confirmed) return;
 
         fetch(`/api/admin/users/${userId}`, { method: 'DELETE' })
             .then(async (response) => {
@@ -362,6 +360,20 @@ document.addEventListener('DOMContentLoaded', () => {
     userSearch?.addEventListener('input', renderUsers);
     userForm.addEventListener('submit', handleSubmit);
 
+    document.getElementById('btnNewUser')?.addEventListener('click', () => openUserModal());
+    document.querySelectorAll('.js-close-user-modal').forEach((btn) => {
+        btn.addEventListener('click', () => closeUserModal());
+    });
+
+    usersTableBody.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-action]');
+        if (!btn) return;
+        const id = Number(btn.dataset.id);
+        if (btn.dataset.action === 'edit-user') openUserModal(id);
+        else if (btn.dataset.action === 'resend-verification') resendVerificationEmail(id);
+        else if (btn.dataset.action === 'delete-user') deleteUser(id);
+    });
+
     // Close modal on background click + ESC
     userModal?.addEventListener('click', (e) => {
         if (e.target === userModal) closeUserModal();
@@ -371,11 +383,6 @@ document.addEventListener('DOMContentLoaded', () => {
             closeUserModal();
         }
     });
-
-    window.openUserModal = openUserModal;
-    window.closeUserModal = closeUserModal;
-    window.deleteUser = deleteUser;
-    window.resendVerificationEmail = resendVerificationEmail;
 
     loadUsers();
 });

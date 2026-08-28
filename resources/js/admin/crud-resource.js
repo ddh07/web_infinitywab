@@ -29,6 +29,9 @@
  * @param {() => Object} config.buildPayload
  * @param {(payload: Object) => string|null} config.validatePayload - Retourne un message d'erreur ou null
  */
+import { openModal as openModalUtil, closeModal as closeModalUtil } from './modal-utils';
+import { confirmDialog } from './confirm-dialog';
+
 export function createCrudResource(config) {
     const el = (id) => document.getElementById(id);
 
@@ -45,10 +48,6 @@ export function createCrudResource(config) {
 
     let items = [];
     let currentId = null;
-
-    function lockBodyScroll(lock) {
-        document.body.style.overflow = lock ? 'hidden' : '';
-    }
 
     function generateSlug(value) {
         return value
@@ -111,8 +110,7 @@ export function createCrudResource(config) {
 
     function openModal(id = null) {
         currentId = id;
-        modal.classList.remove('hidden');
-        lockBodyScroll(true);
+        openModalUtil(modal);
         modalTitle.textContent = id
             ? `Modifier ${config.entityLabel ?? 'un ' + config.entityName}`
             : `Ajouter ${config.entityLabel ?? 'un ' + config.entityName}`;
@@ -131,17 +129,19 @@ export function createCrudResource(config) {
     }
 
     function closeModal() {
-        modal.classList.add('hidden');
+        closeModalUtil(modal);
         form.reset();
         config.resetExtras?.();
         currentId = null;
-        lockBodyScroll(false);
     }
 
-    function deleteItem(id) {
-        if (!confirm(`Êtes-vous sûr de vouloir supprimer ce ${config.entityName} ?`)) {
-            return;
-        }
+    async function deleteItem(id) {
+        const confirmed = await confirmDialog(`Êtes-vous sûr de vouloir supprimer ce ${config.entityName} ? Cette action est irréversible.`, {
+            title: 'Supprimer ' + (config.entityLabel ?? 'l’élément'),
+            confirmLabel: 'Supprimer',
+        });
+        if (!confirmed) return;
+
         fetch(`${config.endpoint}/${id}`, { method: 'DELETE' })
             .then((response) => {
                 if (!response.ok) throw new Error();
@@ -204,11 +204,15 @@ export function createCrudResource(config) {
     if (statusFilter) statusFilter.addEventListener('change', render);
     extraFilters.forEach((node) => node?.addEventListener('change', render));
     form.addEventListener('submit', handleFormSubmit);
-    titleInput.addEventListener('input', () => {
-        if (!currentId) {
-            slugInput.value = generateSlug(titleInput.value);
-        }
-    });
+    // Auto-génération du slug : optionnelle, seulement si la ressource a un champ slug
+    // (ex: FAQ n'a qu'une question/réponse, pas de slug).
+    if (titleInput && slugInput) {
+        titleInput.addEventListener('input', () => {
+            if (!currentId) {
+                slugInput.value = generateSlug(titleInput.value);
+            }
+        });
+    }
 
     modal.addEventListener('click', (e) => {
         if (e.target === modal) closeModal();

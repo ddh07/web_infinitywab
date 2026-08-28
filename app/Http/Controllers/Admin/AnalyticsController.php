@@ -7,10 +7,15 @@ use App\Models\Service;
 use App\Models\Project;
 use App\Models\Product;
 use App\Models\Message;
+use App\Services\GoogleAnalyticsService;
 use Illuminate\Http\Request;
 
 class AnalyticsController extends Controller
 {
+    public function __construct(private GoogleAnalyticsService $googleAnalytics)
+    {
+    }
+
     public function data()
     {
         // Get data for the last 30 days
@@ -60,21 +65,33 @@ class AnalyticsController extends Controller
             ? round(($stats['total_projects'] / $stats['total_messages']) * 100, 2)
             : 0;
 
+        // Trafic réel GA4 si configuré (voir GoogleAnalyticsService) ; sinon on retombe
+        // sur les estimations grossières basées sur le contenu/les messages, comme avant.
+        $ga4Summary = $this->googleAnalytics->summary();
+        $ga4Connected = $ga4Summary !== null;
+
         $performance = [
-            'load_time' => '1.2s', // Static for now, could be measured
+            'load_time' => '1.2s', // Non mesuré (nécessiterait une API type PageSpeed/CrUX)
             'conversion_rate' => $conversionRate . '%',
-            'unique_visitors' => $stats['total_messages'] * 3, // Rough estimate
-            'bounce_rate' => '42%', // Static for now
-            'avg_session_duration' => '3m 45s', // Static for now
-            'pages_per_session' => '4.2', // Static for now
+            'unique_visitors' => $ga4Summary['unique_visitors'] ?? $stats['total_messages'] * 3,
+            'bounce_rate' => $ga4Summary['bounce_rate'] ?? '42%',
+            'avg_session_duration' => $ga4Summary['avg_session_duration'] ?? '3m 45s',
+            'pages_per_session' => $ga4Summary['pages_per_session'] ?? '4.2',
             'avg_response_time' => round($avgResponseTime, 1) . 'h',
         ];
 
-        // Content popularity based on real data
+        $ga4PageViews = $this->googleAnalytics->pageViewsByPrefix([
+            'services_views' => '/services',
+            'projects_views' => '/projets',
+            'products_views' => '/produits',
+        ]);
+
+        // Content popularity : vraies vues GA4 si disponibles, sinon estimation basée
+        // sur le nombre d'éléments actifs (grossier, faute de mesure réelle de trafic).
         $content_popularity = [
-            'services_views' => $stats['active_services'] * 150, // Estimate based on active count
-            'projects_views' => $stats['active_projects'] * 200, // Estimate based on active count
-            'products_views' => $stats['active_products'] * 100, // Estimate based on active count
+            'services_views' => $ga4PageViews['services_views'] ?? $stats['active_services'] * 150,
+            'projects_views' => $ga4PageViews['projects_views'] ?? $stats['active_projects'] * 200,
+            'products_views' => $ga4PageViews['products_views'] ?? $stats['active_products'] * 100,
         ];
 
         return response()->json([
@@ -82,6 +99,7 @@ class AnalyticsController extends Controller
             'stats' => $stats,
             'performance' => $performance,
             'content_popularity' => $content_popularity,
+            'ga4_connected' => $ga4Connected,
         ]);
     }
 }

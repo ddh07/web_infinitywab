@@ -18,11 +18,16 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var list<string>
      */
+    /**
+     * `is_admin` reste hors de $fillable pour qu'aucun mass-assignment
+     * (`User::create($request->all())`) ne puisse jamais l'élever par erreur.
+     * Seul App\Http\Controllers\Admin\UserController (déjà protégé par le
+     * middleware `admin`) doit le renseigner, via $user->is_admin = ... explicite.
+     */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'is_admin',
     ];
 
     /**

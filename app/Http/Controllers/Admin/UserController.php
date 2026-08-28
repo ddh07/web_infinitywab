@@ -34,8 +34,9 @@ class UserController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'is_admin' => (bool) ($validated['is_admin'] ?? false),
         ]);
+        $user->is_admin = (bool) ($validated['is_admin'] ?? false);
+        $user->save();
 
         return response()->json([
             'message' => 'User created successfully',
@@ -61,11 +62,19 @@ class UserController extends Controller
             'password' => ['sometimes', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $isAdmin = $validated['is_admin'] ?? null;
+        unset($validated['is_admin']);
+
         if (isset($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);
         }
 
         $user->update($validated);
+
+        if ($isAdmin !== null) {
+            $user->is_admin = (bool) $isAdmin;
+            $user->save();
+        }
 
         return response()->json([
             'message' => 'User updated successfully',

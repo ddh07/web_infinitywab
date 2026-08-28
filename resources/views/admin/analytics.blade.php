@@ -7,17 +7,20 @@
 <div class="space-y-6">
     <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
-            <h1 class="text-lg font-semibold text-slate-800">Statistiques</h1>
-            <p class="text-sm text-slate-500">Vue d'ensemble des performances</p>
+            <h1 class="text-lg font-semibold text-ink-primary">Statistiques</h1>
+            <p class="text-sm text-ink-muted">
+                Vue d'ensemble des performances
+                <span id="ga4-status-badge" class="hidden ml-2 px-2 py-0.5 rounded-full text-xs font-semibold align-middle"></span>
+            </p>
         </div>
         <div class="flex items-center gap-3">
-            <select id="periodFilter" class="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500">
+            <select id="periodFilter" class="rounded-lg border border-(--border-default) bg-surface-sunken px-3 py-2 text-sm focus:border-azure-500">
                     <option value="7">7 derniers jours</option>
                     <option value="30">30 derniers jours</option>
                     <option value="90">90 derniers jours</option>
                     <option value="365">1 an</option>
                 </select>
-                <button onclick="refreshStats()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 text-sm font-medium">
+                <button type="button" id="btnRefreshStats" class="bg-azure-600 text-white px-4 py-2 rounded-lg hover:bg-azure-700 text-sm font-medium">
                     Actualiser
                 </button>
             </div>
@@ -25,60 +28,60 @@
     </div>
 
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white rounded-lg border border-slate-200 shadow-sm p-4">
+        <div class="bg-surface-raised rounded-lg border border-(--border-default) shadow-sm p-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-medium text-slate-500 uppercase">Services</p>
-                    <p class="text-2xl font-semibold text-slate-800" id="services-count">0</p>
-                    <p class="text-sm text-green-600" id="services-growth">+0 ce mois</p>
+                    <p class="text-xs font-medium text-ink-muted uppercase">Services</p>
+                    <p class="text-2xl font-semibold text-ink-primary" id="services-count">0</p>
+                    <p class="text-sm text-green-600 dark:text-green-400" id="services-growth">+0 ce mois</p>
                 </div>
-                <div class="p-3 bg-blue-100 rounded-full">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="p-3 bg-blue-100 dark:bg-blue-500/10 rounded-full">
+                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-lg border border-slate-200 shadow-sm p-4">
+        <div class="bg-surface-raised rounded-lg border border-(--border-default) shadow-sm p-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-medium text-slate-500 uppercase">Projets</p>
-                    <p class="text-2xl font-semibold text-slate-800" id="projects-count">0</p>
-                    <p class="text-sm text-green-600" id="projects-growth">+0 ce mois</p>
+                    <p class="text-xs font-medium text-ink-muted uppercase">Projets</p>
+                    <p class="text-2xl font-semibold text-ink-primary" id="projects-count">0</p>
+                    <p class="text-sm text-green-600 dark:text-green-400" id="projects-growth">+0 ce mois</p>
                 </div>
-                <div class="p-3 bg-green-100 rounded-full">
-                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="p-3 bg-green-100 dark:bg-green-500/10 rounded-full">
+                    <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                     </svg>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-lg border border-slate-200 shadow-sm p-4">
+        <div class="bg-surface-raised rounded-lg border border-(--border-default) shadow-sm p-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-medium text-slate-500 uppercase">Produits</p>
-                    <p class="text-2xl font-semibold text-slate-800" id="products-count">0</p>
-                    <p class="text-sm text-green-600" id="products-growth">+0 ce mois</p>
+                    <p class="text-xs font-medium text-ink-muted uppercase">Produits</p>
+                    <p class="text-2xl font-semibold text-ink-primary" id="products-count">0</p>
+                    <p class="text-sm text-green-600 dark:text-green-400" id="products-growth">+0 ce mois</p>
                 </div>
-                <div class="p-3 bg-purple-100 rounded-full">
-                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="p-3 bg-purple-100 dark:bg-purple-500/10 rounded-full">
+                    <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                     </svg>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-lg border border-slate-200 shadow-sm p-4">
+        <div class="bg-surface-raised rounded-lg border border-(--border-default) shadow-sm p-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-medium text-slate-500 uppercase">Messages</p>
-                    <p class="text-2xl font-semibold text-slate-800" id="messages-count">0</p>
-                    <p class="text-sm text-green-600" id="messages-growth">+0 ce mois</p>
+                    <p class="text-xs font-medium text-ink-muted uppercase">Messages</p>
+                    <p class="text-2xl font-semibold text-ink-primary" id="messages-count">0</p>
+                    <p class="text-sm text-green-600 dark:text-green-400" id="messages-growth">+0 ce mois</p>
                 </div>
-                <div class="p-3 bg-red-100 rounded-full">
-                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="p-3 bg-red-100 dark:bg-red-500/10 rounded-full">
+                    <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                     </svg>
                 </div>
@@ -89,35 +92,35 @@
     <!-- Charts Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <!-- Messages Over Time -->
-        <div class="bg-white rounded-lg border border-slate-200 shadow-sm p-5">
-            <h2 class="text-base font-semibold text-slate-800 mb-4">Messages au fil du temps</h2>
-            <div class="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
+        <div class="bg-surface-raised rounded-lg border border-(--border-default) shadow-sm p-5">
+            <h2 class="text-base font-semibold text-ink-primary mb-4">Messages au fil du temps</h2>
+            <div class="h-64 flex items-center justify-center bg-surface-sunken rounded-lg">
                 <canvas id="messagesChart"></canvas>
             </div>
         </div>
 
         <!-- Content Distribution -->
-        <div class="bg-white rounded-lg border border-slate-200 shadow-sm p-5">
-            <h2 class="text-base font-semibold text-slate-800 mb-4">Répartition du contenu</h2>
-            <div class="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
+        <div class="bg-surface-raised rounded-lg border border-(--border-default) shadow-sm p-5">
+            <h2 class="text-base font-semibold text-ink-primary mb-4">Répartition du contenu</h2>
+            <div class="h-64 flex items-center justify-center bg-surface-sunken rounded-lg">
                 <canvas id="contentChart"></canvas>
             </div>
         </div>
     </div>
 
     <!-- Recent Activity -->
-    <div class="bg-white rounded-lg shadow">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <h2 class="text-lg font-semibold text-gray-900">Activité récente</h2>
+    <div class="bg-surface-raised rounded-lg shadow">
+        <div class="px-6 py-4 border-b border-(--border-default)">
+            <h2 class="text-lg font-semibold text-ink-primary">Activité récente</h2>
         </div>
         <div class="p-6">
             <div class="space-y-4" id="recent-activity">
                 <!-- Activity will be loaded dynamically via JavaScript -->
                 <div class="text-center py-8">
-                    <svg class="w-12 h-12 text-gray-400 mx-auto mb-3 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-12 h-12 text-ink-muted mx-auto mb-3 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    <p class="text-gray-500 text-sm">Chargement de l'activité...</p>
+                    <p class="text-ink-muted text-sm">Chargement de l'activité...</p>
                 </div>
             </div>
         </div>
@@ -125,60 +128,60 @@
 
     <!-- Performance Metrics -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Performance du site</h3>
+        <div class="bg-surface-raised rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-ink-primary mb-4">Performance du site</h3>
             <div class="space-y-3">
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Temps de chargement</span>
-                    <span class="text-sm font-medium text-green-600" id="load-time">1.2s</span>
+                    <span class="text-sm text-ink-secondary">Temps de chargement</span>
+                    <span class="text-sm font-medium text-green-600 dark:text-green-400" id="load-time">1.2s</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Taux de conversion</span>
-                    <span class="text-sm font-medium text-blue-600" id="conversion-rate">0%</span>
+                    <span class="text-sm text-ink-secondary">Taux de conversion</span>
+                    <span class="text-sm font-medium text-blue-600 dark:text-blue-400" id="conversion-rate">0%</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Visiteurs uniques</span>
-                    <span class="text-sm font-medium text-purple-600" id="unique-visitors">0</span>
+                    <span class="text-sm text-ink-secondary">Visiteurs uniques</span>
+                    <span class="text-sm font-medium text-purple-600 dark:text-purple-400" id="unique-visitors">0</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Temps de réponse moyen</span>
-                    <span class="text-sm font-medium text-orange-600" id="avg-response-time">24h</span>
+                    <span class="text-sm text-ink-secondary">Temps de réponse moyen</span>
+                    <span class="text-sm font-medium text-orange-600 dark:text-orange-400" id="avg-response-time">24h</span>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Popularité du contenu</h3>
+        <div class="bg-surface-raised rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-ink-primary mb-4">Popularité du contenu</h3>
             <div class="space-y-3">
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Services vus</span>
-                    <span class="text-sm font-medium text-blue-600" id="services-views">0</span>
+                    <span class="text-sm text-ink-secondary">Services vus</span>
+                    <span class="text-sm font-medium text-blue-600 dark:text-blue-400" id="services-views">0</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Projets vus</span>
-                    <span class="text-sm font-medium text-green-600" id="projects-views">0</span>
+                    <span class="text-sm text-ink-secondary">Projets vus</span>
+                    <span class="text-sm font-medium text-green-600 dark:text-green-400" id="projects-views">0</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Produits vus</span>
-                    <span class="text-sm font-medium text-purple-600" id="products-views">0</span>
+                    <span class="text-sm text-ink-secondary">Produits vus</span>
+                    <span class="text-sm font-medium text-purple-600 dark:text-purple-400" id="products-views">0</span>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Engagement</h3>
+        <div class="bg-surface-raised rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-ink-primary mb-4">Engagement</h3>
             <div class="space-y-3">
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Taux de rebond</span>
-                    <span class="text-sm font-medium text-yellow-600" id="bounce-rate">42%</span>
+                    <span class="text-sm text-ink-secondary">Taux de rebond</span>
+                    <span class="text-sm font-medium text-yellow-600 dark:text-yellow-400" id="bounce-rate">42%</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Durée moyenne</span>
-                    <span class="text-sm font-medium text-green-600" id="avg-session-duration">3m 45s</span>
+                    <span class="text-sm text-ink-secondary">Durée moyenne</span>
+                    <span class="text-sm font-medium text-green-600 dark:text-green-400" id="avg-session-duration">3m 45s</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Pages/session</span>
-                    <span class="text-sm font-medium text-blue-600" id="pages-per-session">4.2</span>
+                    <span class="text-sm text-ink-secondary">Pages/session</span>
+                    <span class="text-sm font-medium text-blue-600 dark:text-blue-400" id="pages-per-session">4.2</span>
                 </div>
             </div>
         </div>
@@ -186,12 +189,22 @@
 </div>
 
 @push('scripts')
-<script>
+<script nonce="{{ $cspNonce }}">
 let analyticsData = null;
 let messagesChart = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     loadAnalyticsData();
+
+    // Le canvas ne suit pas les classes CSS dark: automatiquement : on le redessine
+    // avec les couleurs du nouveau thème quand l'utilisateur bascule.
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            if (analyticsData) {
+                initCharts(analyticsData);
+            }
+        });
+    });
 });
 
 function loadAnalyticsData() {
@@ -199,6 +212,19 @@ function loadAnalyticsData() {
         .then(response => response.json())
         .then(data => {
             analyticsData = data;
+
+            // Indique si les métriques de trafic viennent de GA4 (réel) ou d'une estimation
+            const ga4Badge = document.getElementById('ga4-status-badge');
+            if (ga4Badge) {
+                ga4Badge.classList.remove('hidden');
+                if (data.ga4_connected) {
+                    ga4Badge.textContent = 'Google Analytics connecté';
+                    ga4Badge.className = 'ml-2 px-2 py-0.5 rounded-full text-xs font-semibold align-middle bg-green-100 text-green-800 dark:bg-green-500/10 dark:text-green-400';
+                } else {
+                    ga4Badge.textContent = 'Estimation (GA4 non connecté)';
+                    ga4Badge.className = 'ml-2 px-2 py-0.5 rounded-full text-xs font-semibold align-middle bg-amber-100 text-amber-800 dark:bg-amber-500/10 dark:text-amber-400';
+                }
+            }
 
             // Update overview cards
             updateOverviewCards(data.stats);
@@ -309,11 +335,11 @@ function updateRecentActivity(stats) {
                 <div class="flex items-start space-x-3">
                     <div class="w-2 h-2 bg-${activity.color}-500 rounded-full mt-2"></div>
                     <div class="flex-1">
-                        <p class="text-sm text-gray-900">
+                        <p class="text-sm text-ink-primary">
                             <span class="font-medium">${activity.title}</span>
                         </p>
-                        <p class="text-sm text-gray-600">${activity.description}</p>
-                        <p class="text-xs text-gray-500">${activity.time}</p>
+                        <p class="text-sm text-ink-secondary">${activity.description}</p>
+                        <p class="text-xs text-ink-muted">${activity.time}</p>
                     </div>
                 </div>
             `).join('');
@@ -322,7 +348,7 @@ function updateRecentActivity(stats) {
         })
         .catch(error => {
             console.error('Error loading dashboard data for recent activity:', error);
-            container.innerHTML = '<p class="text-gray-500 text-sm">Erreur de chargement de l\'activité récente</p>';
+            container.innerHTML = '<p class="text-ink-muted text-sm">Erreur de chargement de l\'activité récente</p>';
         });
 }
 
@@ -353,6 +379,13 @@ function initCharts(data) {
     }
 }
 
+// Lit les tokens de thème actifs (clair/sombre) directement depuis les variables CSS,
+// pour que les graphiques Canvas (non stylables via classes Tailwind) suivent le thème.
+function chartThemeColor(cssVar, fallback) {
+    const value = getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
+    return value || fallback;
+}
+
 function drawMessagesChart(messagesData) {
     const canvas = document.getElementById('messagesChart');
     if (!canvas) return;
@@ -365,11 +398,11 @@ function drawMessagesChart(messagesData) {
     ctx.clearRect(0, 0, width, height);
 
     // Draw chart background
-    ctx.fillStyle = '#f9fafb';
+    ctx.fillStyle = chartThemeColor('--surface-sunken', '#f9fafb');
     ctx.fillRect(0, 0, width, height);
 
     // Draw grid lines
-    ctx.strokeStyle = '#e5e7eb';
+    ctx.strokeStyle = chartThemeColor('--border-strong', '#e5e7eb');
     ctx.lineWidth = 1;
 
     for (let i = 0; i <= 5; i++) {
@@ -453,7 +486,7 @@ function drawContentChart(stats) {
 }
 
 function refreshStats() {
-    const button = event.target;
+    const button = document.getElementById('btnRefreshStats');
     const originalText = button.textContent;
 
     button.textContent = 'Actualisation...';
@@ -464,6 +497,8 @@ function refreshStats() {
         button.disabled = false;
     });
 }
+
+document.getElementById('btnRefreshStats')?.addEventListener('click', () => refreshStats());
 
 // Period filter (for future enhancement)
 document.getElementById('periodFilter').addEventListener('change', function() {
