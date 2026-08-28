@@ -18,8 +18,11 @@ class Company extends Model
         'description',
         'vision',
         'mission',
+        'values',
+        'display_mode',
         'email',
         'phone',
+        'whatsapp',
         'address',
         'website',
         'founded_year',
@@ -30,6 +33,9 @@ class Company extends Model
     ];
 
     protected $casts = [
+        'vision' => 'array',
+        'mission' => 'array',
+        'values' => 'array',
         'social_links' => 'array',
         'stats' => 'array',
         'is_active' => 'boolean',

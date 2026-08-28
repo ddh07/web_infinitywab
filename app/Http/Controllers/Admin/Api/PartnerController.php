@@ -10,7 +10,7 @@ class PartnerController extends Controller
 {
     public function index()
     {
-        $partners = Partner::active()->ordered()->get();
+        $partners = Partner::ordered()->get();
         return response()->json($partners);
     }
 

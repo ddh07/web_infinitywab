@@ -16,12 +16,23 @@ class CompanySeeder extends Seeder
         Company::create([
             'name' => 'Infinity WAB',
             'description' => 'L\'excellence technologique africaine au service de l\'innovation. Nous transformons les idées en solutions digitales puissantes pour un avenir numérique prospère au Burkina Faso et en Afrique.',
-            'vision' => 'Devenir le leader technologique de référence en Afrique de l\'Ouest, en créant des solutions qui anticipent les besoins de demain.',
-            'mission' => 'Propulser la transformation digitale des entreprises africaines grâce à des solutions technologiques innovantes, adaptées et accessibles, tout en formant la prochaine génération de talents technologiques.',
-            'email' => 'contact@infinity-wab.bf',
-            'phone' => '+226 XX XX XX XX',
+            'vision' => [
+                'Devenir le leader technologique de référence en Afrique de l\'Ouest, en créant des solutions qui anticipent les besoins de demain.',
+            ],
+            'mission' => [
+                'Propulser la transformation digitale des entreprises africaines grâce à des solutions technologiques innovantes, adaptées et accessibles, tout en formant la prochaine génération de talents technologiques.',
+            ],
+            'values' => [
+                ['title' => 'Excellence opérationnelle', 'body' => 'Des process certifiés et une gouvernance rigoureuse sur chaque projet.'],
+                ['title' => 'Innovation continue', 'body' => 'Veille technologique constante et prototypage rapide pour garder une longueur d\'avance.'],
+                ['title' => 'Intégrité', 'body' => 'Transparence, honnêteté et volonté d\'apprendre avec nos partenaires.'],
+                ['title' => 'Engagement humain', 'body' => 'Accompagnement de proximité, formation et transfert de compétences.'],
+            ],
+            'email' => 'infinity-wab@infinity-wab.com',
+            'phone' => '+226 73 24 08 46',
+            'whatsapp' => '+226 65 20 79 81',
             'address' => 'Ouagadougou, Burkina Faso',
-            'website' => 'https://infinity-wab.bf',
+            'website' => 'https://infinity-wab.com',
             'founded_year' => '2017',
             'employees_count' => 25,
             'social_links' => [

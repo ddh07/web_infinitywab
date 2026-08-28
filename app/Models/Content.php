@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\HtmlSanitizer;
+use App\Support\ImagePath;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -28,6 +30,16 @@ class Content extends Model
         'is_featured' => 'boolean',
         'order' => 'integer'
     ];
+
+    public function setContentAttribute(?string $value): void
+    {
+        $this->attributes['content'] = HtmlSanitizer::sanitize($value);
+    }
+
+    public function getFeaturedImageUrlAttribute(): string
+    {
+        return ImagePath::resolve($this->featured_image, 'images/placeholder-project.jpg');
+    }
 
     /**
      * Scope pour récupérer uniquement le contenu publié
@@ -70,13 +82,13 @@ class Content extends Model
 
         static::creating(function ($content) {
             if (!$content->slug) {
-                $content->slug = \Str::slug($content->title);
+                $content->slug = Str::slug($content->title);
             }
         });
 
         static::updating(function ($content) {
             if ($content->isDirty('title') && !$content->isDirty('slug')) {
-                $content->slug = \Str::slug($content->title);
+                $content->slug = Str::slug($content->title);
             }
         });
     }
